@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -65,26 +66,31 @@ public class ForecastFragment extends Fragment {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
             FetchWeatherTask task = new FetchWeatherTask();
-            task.execute();
+            task.execute("94043");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    public class FetchWeatherTask extends AsyncTask<Void, Void, String>{
+    public class FetchWeatherTask extends AsyncTask<String, Void, String>{
 
         String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
         @Override
-        protected String doInBackground(Void... params){
+        protected String doInBackground(String... params){
             // declare these outside of the try block so they can be closed
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             try {
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&units=metric&cnt=7&APPID=" +
-                getResources().getString(R.string.WeatherAPIKey));
+                String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon().
+                        appendQueryParameter("q", params[0]).
+                        appendQueryParameter("units", "metric").
+                        appendQueryParameter("cnt","7").
+                        appendQueryParameter("APPID",getResources().getString(R.string.WeatherAPIKey)).build();
 
+                URL url = new URL(builtUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
