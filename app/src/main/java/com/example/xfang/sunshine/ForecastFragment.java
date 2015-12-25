@@ -24,14 +24,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class ForecastFragment extends Fragment {
 
+    final int NUM_DAYS = 7;
+    ArrayAdapter<String> mAdapter;
+    ArrayList<String> mAdapterData = new ArrayList<>();
+
     public ForecastFragment() {
     }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -44,13 +51,13 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String[] forecastData = {"boo","bee","blob"};
-
+        mAdapterData.add("dummy");
+        mAdapterData.add("data");
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
-                R.layout.list_item_forecast, forecastData);
-        listView.setAdapter(adapter);
+        mAdapter = new ArrayAdapter<>(getActivity(),
+                R.layout.list_item_forecast, mAdapterData);
+        listView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -93,7 +100,7 @@ public class ForecastFragment extends Fragment {
 
             String format = "json";
             String unit = "metric";
-            int numDays = 7;
+            int numDays = NUM_DAYS;
 
             try {
                 final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
@@ -129,6 +136,7 @@ public class ForecastFragment extends Fragment {
             }
             catch(IOException e){
                 Log.e(LOG_TAG, "Error ", e);
+                e.printStackTrace();
                 return null;
             }
 
@@ -145,6 +153,15 @@ public class ForecastFragment extends Fragment {
                     }
                 }
             }
+        }
+
+        @Override
+        protected void onPostExecute(String[] array){
+            mAdapterData.clear();
+            mAdapter.addAll(array);
+
+            mAdapter.notifyDataSetChanged();
+
         }
     }
 }
