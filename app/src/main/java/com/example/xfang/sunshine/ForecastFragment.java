@@ -12,8 +12,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -54,10 +57,20 @@ public class ForecastFragment extends Fragment {
         mAdapterData.add("dummy");
         mAdapterData.add("data");
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        final ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mAdapter = new ArrayAdapter<>(getActivity(),
                 R.layout.list_item_forecast, mAdapterData);
         listView.setAdapter(mAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String displayText = mAdapter.getItem(position);
+                Toast toast = Toast.makeText(getActivity(), displayText, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
 
         return rootView;
     }
@@ -157,10 +170,10 @@ public class ForecastFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] array){
-            mAdapterData.clear();
-            mAdapter.addAll(array);
-
-            mAdapter.notifyDataSetChanged();
+            if (array != null) {
+                mAdapter.clear();
+                mAdapter.addAll(array);
+            }
 
         }
     }
