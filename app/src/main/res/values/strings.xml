@@ -10,6 +10,20 @@
     <string name="pref_location_title">Location</string>
     <string name="pref_location_defaultValue">94117</string>
 
+    <string name="pref_units_key">units</string>
+    <string name="pref_units_title">Temperature Units</string>
+    <string name="pref_units_defaultValue">metric</string>
+
+    <string-array name="pref_units_key_array">
+        <item>metric</item>
+        <item>imperial</item>
+    </string-array>
+
+    <string-array name="pref_units_label_array">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 

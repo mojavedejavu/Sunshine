@@ -41,7 +41,7 @@ public class Utilities {
 
                 String day = getReadableDate(new Time().setJulianDay(firstDayJulian + i));
 
-                String dailyString = day + " " + min + " ~ " + max + ", " + description;
+                String dailyString = day + " " + min + " / " + max + ", " + description;
                 result[i] = dailyString;
                 Log.d(LOG_TAG, dailyString);
             }
