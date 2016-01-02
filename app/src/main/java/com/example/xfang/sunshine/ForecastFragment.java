@@ -1,8 +1,10 @@
 package com.example.xfang.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.text.format.Time;
@@ -36,13 +38,20 @@ import java.util.Vector;
  */
 public class ForecastFragment extends Fragment {
 
+    final String LOG_TAG = ForecastFragment.class.getSimpleName();
+
     final int NUM_DAYS = 7;
     ArrayAdapter<String> mAdapter;
-    ArrayList<String> mAdapterData = new ArrayList<>();
 
     public ForecastFragment() {
     }
 
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -55,12 +64,9 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        mAdapterData.add("dummy");
-        mAdapterData.add("data");
-
         final ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mAdapter = new ArrayAdapter<>(getActivity(),
-                R.layout.list_item_forecast, mAdapterData);
+                R.layout.list_item_forecast, new ArrayList<String>());
         listView.setAdapter(mAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -92,8 +98,7 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            FetchWeatherTask task = new FetchWeatherTask();
-            task.execute("94043");
+            updateWeather();
             return true;
         }
 
@@ -101,6 +106,14 @@ public class ForecastFragment extends Fragment {
     }
 
 
+    private void updateWeather(){
+        FetchWeatherTask task = new FetchWeatherTask();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sp.getString(
+                getString(R.string.pref_location_key),
+                getString(R.string.pref_location_defaultValue));
+        task.execute(location);
+    }
 
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
