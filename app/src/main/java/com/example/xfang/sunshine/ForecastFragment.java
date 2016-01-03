@@ -157,9 +157,15 @@ public class ForecastFragment extends Fragment {
                 while ((line = reader.readLine()) != null){
                     buffer.append(line + "\n");
                 }
-
                 Log.d(LOG_TAG, buffer.toString());
-                String[] parsedForecasts = Utilities.getWeatherDataFromJson(buffer.toString(), numDays);
+
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String unitsPref = sp.getString(
+                        getString(R.string.pref_units_key),
+                        getString(R.string.pref_units_defaultValue));
+                boolean toImperial = unitsPref.equals(getString(R.string.pref_units_imperial_key));
+
+                String[] parsedForecasts = Utilities.getWeatherDataFromJson(buffer.toString(), numDays, toImperial);
                 return parsedForecasts;
             }
             catch(IOException e){
