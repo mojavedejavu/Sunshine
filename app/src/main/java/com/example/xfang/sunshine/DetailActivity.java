@@ -9,9 +9,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ShareActionProvider;
-
-import java.util.Set;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -20,13 +17,13 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        // added code segment per Udacity instructions (branch 3.02)
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new DetailActivityFragment())
-                    .commit();
-        }
-        // end code segment
+//        // added code segment per Udacity instructions (branch 3.02)
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container, new DetailActivityFragment())
+//                    .commit();
+//        }
+//        // end code segment
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

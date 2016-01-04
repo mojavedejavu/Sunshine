@@ -10,7 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ShareActionProvider;
+import android.support.v7.widget.ShareActionProvider;
 import android.widget.TextView;
 
 /**
@@ -21,14 +21,10 @@ public class DetailActivityFragment extends Fragment {
     String mForecastString;
     ShareActionProvider mShareActionProvider;
 
+    final String SHARE_HASHTAG = "#SunshineApp";
+
     public DetailActivityFragment() {
-    }
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        super.setHasOptionsMenu(true);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -52,14 +48,19 @@ public class DetailActivityFragment extends Fragment {
         // Inflate the menu; this adds items to the action bar if it is present.
         getActivity().getMenuInflater().inflate(R.menu.menu_fragment_detail, menu);
 
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastString);
-
-        MenuItem shareMenuItem = (MenuItem) menu.findItem(R.id.action_share);
-        mShareActionProvider = (ShareActionProvider) shareMenuItem.getActionProvider();
+        MenuItem shareMenuItem = menu.findItem(R.id.action_share);
+        mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
         if (mShareActionProvider != null){
-            mShareActionProvider.setShareIntent(shareIntent);
+            mShareActionProvider.setShareIntent(createShareIntent());
         }
+    }
+
+    private Intent createShareIntent(){
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastString + " " + SHARE_HASHTAG);
+        shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
+        shareIntent.setType("text/plain");
+        return shareIntent;
     }
 
 
