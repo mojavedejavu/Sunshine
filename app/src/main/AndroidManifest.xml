@@ -10,6 +10,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:authorities="com.example.xfang.sunshine"
+            android:name=".data.WeatherProvider">
+
+        </provider>
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

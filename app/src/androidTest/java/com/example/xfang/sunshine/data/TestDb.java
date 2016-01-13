@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -11,9 +12,8 @@ import java.util.HashSet;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
-/**
- * Created by xfang on 1/4/16.
- */
+import junit.framework.Test;
+
 public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
@@ -111,7 +111,78 @@ public class TestDb extends AndroidTestCase {
         /*
          *  clean up
          */
-
+        c.close();
         db.close();
+    }
+
+    public long insertLocation(){
+        SQLiteDatabase db = new WeatherDbHelper(mContext).getWritableDatabase();
+        assertTrue("Error: Database can't be opened.", db.isOpen());
+
+        // insert a record to location table
+        ContentValues northPole = TestUtilities.createNorthPoleLocationValues();
+        long locationRowId = db.insert(LocationEntry.TABLE_NAME, null, northPole);
+        assertTrue("Error: insert to location table failed.",
+                locationRowId != -1L);
+
+        // read it out
+        Cursor c = db.query(LocationEntry.TABLE_NAME,
+                null, // projection
+                null, // selection
+                null, // selectionArgs
+                null, // groupBy
+                null, // having
+                null // orderBy
+                );
+
+        // validate
+        assertTrue("Error: no result returned from location table query.", c.moveToFirst());
+        TestUtilities.validateCurrentRecord("Error: location query validation failed.", c, northPole);
+
+        assertFalse("Error: location query returned more than one record.", c.moveToNext());
+
+        // clean-up
+        c.close();
+        db.close();
+        return locationRowId;
+    }
+
+    public long testLocationTable(){
+        return insertLocation();
+    }
+
+    public long testWeatherTable(){
+
+        long locationRowId = insertLocation();
+
+        SQLiteDatabase db = new WeatherDbHelper(mContext).getWritableDatabase();
+        assertTrue("Error: Database can't be opened.", db.isOpen());
+
+        ContentValues weather = TestUtilities.createWeatherValues(locationRowId);
+        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weather);
+
+        assertTrue("Error: insert to weather table failed.",
+                weatherRowId != -1L);
+
+        // read it out
+        Cursor c = db.query(WeatherEntry.TABLE_NAME,
+                null, // projection
+                null, // selection
+                null, // selectionArgs
+                null, // groupBy
+                null, // having
+                null // orderBy
+        );
+
+        // validate
+        assertTrue("Error: no result returned from weather table query.", c.moveToFirst());
+        TestUtilities.validateCurrentRecord("Error: weather query validation failed.", c, weather);
+
+        assertFalse("Error: weather query returned more than one record.", c.moveToNext());
+
+        // clean-up
+        c.close();
+        db.close();
+        return weatherRowId;
     }
 }

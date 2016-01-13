@@ -6,9 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
-/**
- * Created by xfang on 1/4/16.
- */
+
 public class WeatherDbHelper extends SQLiteOpenHelper{
 
     private static final int DATABASE_VERSION = 1;
@@ -46,11 +44,11 @@ public class WeatherDbHelper extends SQLiteOpenHelper{
 
         final String SQL_CREATE_LOCATION_TABLE = "CREATE TABLE " + LocationEntry.TABLE_NAME +
                 " (" +
-                LocationEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT NOT NULL, " +
+                LocationEntry._ID + " INTEGER PRIMARY KEY, " +
+                LocationEntry.COLUMN_LOCATION_SETTING + " TEXT UNIQUE NOT NULL, " +
                 LocationEntry.COLUMN_CITY_NAME + " TEXT NOT NULL, " +
-                LocationEntry.COLUMN_COORD_LAT + " TEXT NOT NULL, " +
-                LocationEntry.COLUMN_COORD_LONG + " TEXT NOT NULL" +
+                LocationEntry.COLUMN_COORD_LAT + " REAL NOT NULL, " +
+                LocationEntry.COLUMN_COORD_LONG + " REAL NOT NULL" +
                 ");";
 
         db.execSQL(SQL_CREATE_LOCATION_TABLE);
@@ -59,7 +57,9 @@ public class WeatherDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
-
+        db.execSQL("DROP TABLE IF EXISTS " + LocationEntry.TABLE_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + WeatherEntry.TABLE_NAME);
+        onCreate(db);
     }
 
 
