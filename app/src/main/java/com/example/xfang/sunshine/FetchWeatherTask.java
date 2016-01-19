@@ -26,6 +26,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
@@ -65,7 +66,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return rowId;
     }
 
-    public String[] getWeatherDataFromJson(String jsonString, String locationSetting, int numDays, boolean toImperial) {
+    private String[] getWeatherDataFromJson(String jsonString, String locationSetting, int numDays, boolean toImperial) {
         String LOG_TAG = "getWeatherDataFromJson";
         String[] result = new String[numDays];
         try {
@@ -101,11 +102,50 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return result;
     }
 
+    private URL buildQueryURL(String locationSetting, int numDays){
+        String format = "json";
+        String unit = "metric"; // always query in metric, convert later if needed
+
+        final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+        final String QUERY_PARAM = "q";
+        final String FORMAT_PARAM = "mode";
+        final String UNITS_PARAM = "units";
+        final String DAYS_PARAM = "cnt";
+        final String API_PARAM = "APPID";
+
+        URL returnUrl = null;
+
+        try {
+            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon().
+                    appendQueryParameter(QUERY_PARAM, locationSetting).
+                    appendQueryParameter(FORMAT_PARAM, format).
+                    appendQueryParameter(UNITS_PARAM, unit).
+                    appendQueryParameter(DAYS_PARAM, String.valueOf(numDays)).
+                    appendQueryParameter(API_PARAM, mContext.getString(R.string.WeatherAPIKey)).build();
+
+            returnUrl = new URL(builtUri.toString());
+        } catch( MalformedURLException e){
+            e.printStackTrace();
+        }
+        Log.d(LOG_TAG, "Built URL: " + returnUrl);
+        return returnUrl;
+    }
+
+    private boolean unitsPrefIsImperial(){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String unitsPref = sp.getString(
+                mContext.getString(R.string.pref_units_key),
+                mContext.getString(R.string.pref_units_defaultValue));
+
+        boolean isImperial = unitsPref.equals(mContext.getString(R.string.pref_units_imperial_key));
+
+        return isImperial;
+    }
+
     public FetchWeatherTask(Context context, ArrayAdapter<String> adapter){
         mContext = context;
         mAdapter = adapter;
     }
-
 
     @Override
     protected String[] doInBackground(String... params){
@@ -113,34 +153,18 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
 
-        String format = "json";
-        String unit = "metric";
         int numDays = NUM_DAYS;
 
         String locationSetting = params[0];
 
         try {
-            final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
-            final String QUERY_PARAM = "q";
-            final String FORMAT_PARAM = "mode";
-            final String UNITS_PARAM = "units";
-            final String DAYS_PARAM = "cnt";
-            final String API_PARAM = "APPID";
-
-            Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon().
-                    appendQueryParameter(QUERY_PARAM, locationSetting).
-                    appendQueryParameter(FORMAT_PARAM, format).
-                    appendQueryParameter(UNITS_PARAM, unit).
-                    appendQueryParameter(DAYS_PARAM, String.valueOf(numDays)).
-                    appendQueryParameter(API_PARAM,mContext.getString(R.string.WeatherAPIKey)).build();
-
-            URL url = new URL(builtUri.toString());
-            Log.d(LOG_TAG, "URL: " + url);
-
+            // build query URL and make urlConnection
+            URL url = buildQueryURL(locationSetting, numDays);
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
+            // read the query response
             reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             StringBuilder buffer = new StringBuilder();
             String line;
@@ -149,13 +173,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             }
             Log.d(LOG_TAG, buffer.toString());
 
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(mContext);
-            String unitsPref = sp.getString(
-                    mContext.getString(R.string.pref_units_key),
-                    mContext.getString(R.string.pref_units_defaultValue));
-            boolean toImperial = unitsPref.equals(mContext.getString(R.string.pref_units_imperial_key));
-
-            String[] parsedForecasts = getWeatherDataFromJson(buffer.toString(), locationSetting, numDays, toImperial);
+            // parse the response
+            String[] parsedForecasts = getWeatherDataFromJson(buffer.toString(), locationSetting, numDays, unitsPrefIsImperial());
             return parsedForecasts;
         }
         catch(IOException e){
