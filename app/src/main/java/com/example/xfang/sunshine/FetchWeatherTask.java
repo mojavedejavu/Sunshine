@@ -84,28 +84,67 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                     cityLatitude);
 
             // add location setting to contentProvider
-            addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
+            long locationRowId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
             Time time = new Time();
             time.setToNow();
             int firstDayJulian = time.getJulianDay(time.toMillis(true), time.gmtoff);
 
+            ContentValues[] forecasts = new ContentValues[array.length()];
+
             for(int i = 0; i < array.length(); i++) {
+                long dateInMilliseconds;
+                String max;
+                String min;
+                String description;
+                String weatherId;
+                String humidity;
+                String pressure;
+                String windSpeed;
+                String windDirection;
+
                 JSONObject daily = (JSONObject) array.get(i);
+
+                // date, humidity, pressure, windSpeed, windDirection
+                long dateInSeconds = daily.getLong("dt");
+                dateInMilliseconds = dateInSeconds * 1000;
+                humidity = daily.getString("humidity");
+                pressure = daily.getString("pressure");
+                windSpeed = daily.getString("speed");
+                windDirection = daily.getString("deg");
+
+                // min and max temp
                 JSONObject tempObject = daily.getJSONObject("temp");
+                max = Utilities.formatTemp(tempObject.getString("max"), toImperial);
+                min = Utilities.formatTemp(tempObject.getString("min"), toImperial);
 
-                String max = Utilities.formatTemp(tempObject.getString("max"), toImperial);
-                String min = Utilities.formatTemp(tempObject.getString("min"), toImperial);
-
+                // desc and weatherId
                 JSONObject weatherObject = (JSONObject) daily.getJSONArray("weather").get(0);
-                String description = weatherObject.getString("main");
+                description = weatherObject.getString("main");
+                weatherId = weatherObject.getString("id");
 
+                // format dailyString
                 String day = Utilities.getReadableDate(new Time().setJulianDay(firstDayJulian + i));
-
                 String dailyString = day + "   " + min + " / " + max + ", " + description;
+
                 result[i] = dailyString;
                 Log.d(LOG_TAG, dailyString);
+
+                ContentValues forecast = new ContentValues();
+                forecast.put(WeatherEntry.COLUMN_LOC_KEY, locationRowId);
+                forecast.put(WeatherEntry.COLUMN_DATE, dateInMilliseconds);
+                forecast.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
+                forecast.put(WeatherEntry.COLUMN_SHORT_DESC, description);
+                forecast.put(WeatherEntry.COLUMN_MAX_TEMP, max);
+                forecast.put(WeatherEntry.COLUMN_MIN_TEMP, min);
+                forecast.put(WeatherEntry.COLUMN_HUMIDITY, humidity);
+                forecast.put(WeatherEntry.COLUMN_PRESSURE, pressure);
+                forecast.put(WeatherEntry.COLUMN_WIND_SPEED, windSpeed);
+                forecast.put(WeatherEntry.COLUMN_DEGREES, windDirection);
+                forecasts[i] = forecast;
             }
+
+            mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, forecasts);
 
         } catch (JSONException e) {
             Log.d(LOG_TAG, "JSON parsing error: " + e);
