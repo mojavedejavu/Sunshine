@@ -40,7 +40,6 @@ public class ForecastFragment extends Fragment {
 
     final String LOG_TAG = ForecastFragment.class.getSimpleName();
 
-    final int NUM_DAYS = 7;
     ArrayAdapter<String> mAdapter;
 
     public ForecastFragment() {
@@ -107,95 +106,11 @@ public class ForecastFragment extends Fragment {
 
 
     private void updateWeather(){
-        FetchWeatherTask task = new FetchWeatherTask();
+        FetchWeatherTask task = new FetchWeatherTask(getActivity(), mAdapter);
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = sp.getString(
                 getString(R.string.pref_location_key),
                 getString(R.string.pref_location_defaultValue));
         task.execute(location);
-    }
-
-
-    public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
-
-        String LOG_TAG = FetchWeatherTask.class.getSimpleName();
-
-        @Override
-        protected String[] doInBackground(String... params){
-            // declare these outside of the try block so they can be closed
-            HttpURLConnection urlConnection = null;
-            BufferedReader reader = null;
-
-            String format = "json";
-            String unit = "metric";
-            int numDays = NUM_DAYS;
-
-            try {
-                final String FORECAST_BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
-                final String QUERY_PARAM = "q";
-                final String FORMAT_PARAM = "mode";
-                final String UNITS_PARAM = "units";
-                final String DAYS_PARAM = "cnt";
-                final String API_PARAM = "APPID";
-
-                Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon().
-                        appendQueryParameter(QUERY_PARAM, params[0]).
-                        appendQueryParameter(FORMAT_PARAM, format).
-                        appendQueryParameter(UNITS_PARAM, unit).
-                        appendQueryParameter(DAYS_PARAM, String.valueOf(numDays)).
-                        appendQueryParameter(API_PARAM,getResources().getString(R.string.WeatherAPIKey)).build();
-
-                URL url = new URL(builtUri.toString());
-                Log.d(LOG_TAG, "URL: " + url);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setRequestMethod("GET");
-                urlConnection.connect();
-
-                reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-                StringBuilder buffer = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null){
-                    buffer.append(line + "\n");
-                }
-                Log.d(LOG_TAG, buffer.toString());
-
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String unitsPref = sp.getString(
-                        getString(R.string.pref_units_key),
-                        getString(R.string.pref_units_defaultValue));
-                boolean toImperial = unitsPref.equals(getString(R.string.pref_units_imperial_key));
-
-                String[] parsedForecasts = Utilities.getWeatherDataFromJson(buffer.toString(), numDays, toImperial);
-                return parsedForecasts;
-            }
-            catch(IOException e){
-                Log.e(LOG_TAG, "Error ", e);
-                e.printStackTrace();
-                return null;
-            }
-
-            finally{
-                if (urlConnection != null){
-                    urlConnection.disconnect();
-                }
-                if (reader != null){
-                    try {
-                        reader.close();
-                    }
-                    catch(IOException e){
-                        Log.e(LOG_TAG, "Error closing stream", e);
-                    }
-                }
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String[] array){
-            if (array != null) {
-                mAdapter.clear();
-                mAdapter.addAll(array);
-            }
-
-        }
     }
 }

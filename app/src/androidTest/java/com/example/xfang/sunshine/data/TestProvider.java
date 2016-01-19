@@ -1,17 +1,23 @@
 package com.example.xfang.sunshine.data;
 
 import android.content.ComponentName;
-import android.content.ContentProvider;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.content.pm.PackageManager;
 import android.content.pm.ProviderInfo;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.os.Build;
 import android.test.AndroidTestCase;
 import android.util.Log;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
+
+import junit.framework.Test;
+
 
 public class TestProvider extends AndroidTestCase{
 
@@ -26,6 +32,19 @@ public class TestProvider extends AndroidTestCase{
             WeatherEntry.buildUriWithLocation(TEST_LOCATION);
     public static final Uri TEST_URI_WEATHER_WITH_LOCATION_AND_DATE =
             WeatherEntry.buildUriWithLocationAndDate(TEST_LOCATION, TEST_DATE);
+
+    @Override
+    public void setUp(){
+        deleteAllRecordsFromDB();
+    }
+
+    public void deleteAllRecordsFromDB(){
+        SQLiteDatabase db = new WeatherDbHelper(mContext).getWritableDatabase();
+
+        db.delete(LocationEntry.TABLE_NAME, null, null);
+        db.delete(WeatherEntry.TABLE_NAME, null, null);
+        db.close();
+    }
 
     public void testUriMatcher(){
         UriMatcher matcher = WeatherProvider.buildUriMatcher();
@@ -75,5 +94,85 @@ public class TestProvider extends AndroidTestCase{
         type = resolver.getType(TEST_URI_WEATHER_WITH_LOCATION_AND_DATE);
         assertEquals(type, WeatherEntry.CONTENT_TYPE_ITEM);
 
+    }
+
+    public void testBasicLocationQueries(){
+
+        long rowId = TestUtilities.insertNorthPoleLocationValues(mContext);
+
+        // test basic location query
+        Cursor c = mContext.getContentResolver().query(
+                LocationEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        ContentValues northPole = TestUtilities.createNorthPoleLocationValues();
+        TestUtilities.validateCursor("Error: basic location query failed.", c, northPole);
+
+        // test query by rowId
+        c = mContext.getContentResolver().query(
+                LocationEntry.CONTENT_URI,
+                null,
+                LocationEntry._ID + " = ?",
+                new String[]{String.valueOf(rowId)},
+                null);
+        TestUtilities.validateCursor("Error: location query by rowId failed.", c, northPole);
+
+        // test if Notification Uri is set up correctly
+        if (Build.VERSION.SDK_INT >= 19){
+            assertEquals("Error: Location query did not set up Notification Uri correctly.",
+                    LocationEntry.CONTENT_URI, c.getNotificationUri());
+        }
+    }
+
+    public void testBasicWeatherQueries(){
+        SQLiteDatabase db = new WeatherDbHelper(mContext).getWritableDatabase();
+
+        long northPoleRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
+        ContentValues weatherValues = TestUtilities.createWeatherValues(northPoleRowId);
+        long weatherRowId = db.insert(WeatherEntry.TABLE_NAME, null, weatherValues);
+        // Verify we got a row back.
+        assertTrue("Error: Failure to insert weather Values", weatherRowId != -1);
+        db.close();
+
+        Cursor c = mContext.getContentResolver().query(
+                WeatherEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        TestUtilities.validateCursor("Error: basic weather query failed.", c, weatherValues);
+
+        // test if Notification Uri is set up correctly
+        if (Build.VERSION.SDK_INT >= 19){
+            assertEquals("Error: Weather query did not set up Notification Uri correctly.",
+                    WeatherEntry.CONTENT_URI, c.getNotificationUri());
+        }
+    }
+
+    public void testBulkInsert(){
+
+        long northPoleRowId = TestUtilities.insertNorthPoleLocationValues(mContext);
+        ContentValues[] expectedValuesArray = TestUtilities.createWeatherValuesForBulkInsert(northPoleRowId, 7);
+
+        mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI, expectedValuesArray);
+
+        Cursor cursor = mContext.getContentResolver().query(
+                WeatherEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                WeatherEntry.COLUMN_DATE + " ASC");
+
+        assertTrue("BulkInsert test failed. Cursor is empty.", cursor.moveToFirst());
+
+        for(int i = 0; i < expectedValuesArray.length; i++){
+            TestUtilities.validateCurrentRecord("BulkInsert test failed.", cursor, expectedValuesArray[i]);
+            cursor.moveToNext();
+        }
+        cursor.close();
     }
 }

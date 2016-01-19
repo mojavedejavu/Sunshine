@@ -1,6 +1,7 @@
 package com.example.xfang.sunshine.data;
 
 import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.format.Time;
@@ -39,6 +40,10 @@ public class WeatherContract {
 
         public static final String COLUMN_COORD_LAT = "coord_lat";
         public static final String COLUMN_COORD_LONG = "coord_long";
+
+        public static Uri buildUriWithRowId(long rowId){
+            return ContentUris.withAppendedId(CONTENT_URI, rowId);
+        }
 
     }
 
@@ -81,6 +86,10 @@ public class WeatherContract {
 
         // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
         public static final String COLUMN_DEGREES = "degrees";
+
+        public static Uri buildUriWithRowId(long rowId){
+            return ContentUris.withAppendedId(CONTENT_URI, rowId);
+        }
 
         public static Uri buildUriWithLocation(String location){
             return CONTENT_URI.buildUpon().appendPath(location).build();

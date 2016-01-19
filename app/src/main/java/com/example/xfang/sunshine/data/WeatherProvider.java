@@ -13,6 +13,8 @@ import android.support.annotation.NonNull;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
+import java.sql.SQLException;
+
 public class WeatherProvider extends ContentProvider{
 
     private WeatherDbHelper mWeatherDbHelper;
@@ -33,6 +35,14 @@ public class WeatherProvider extends ContentProvider{
                 LocationEntry.TABLE_NAME + "." + LocationEntry._ID;
 
         mQueryBuilder.setTables(INNER_JOIN_SQL);
+    }
+
+    private void normalizeDate(ContentValues values) {
+        // normalize the date value
+        if (values.containsKey(WeatherContract.WeatherEntry.COLUMN_DATE)) {
+            long dateValue = values.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
+            values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.normalizeDate(dateValue));
+        }
     }
 
     public static UriMatcher buildUriMatcher(){
@@ -69,14 +79,14 @@ public class WeatherProvider extends ContentProvider{
             selectionArgs = new String[]{location, String.valueOf(startDate)};
         }
 
-        Cursor c = mQueryBuilder.query(db,
+        Cursor cursor = mQueryBuilder.query(db,
                 projection,
                 selection,
                 selectionArgs,
                 null,
                 null,
                 sortOrder);
-        return c;
+        return cursor;
     }
 
     private Cursor queryWithLocationAndDate(Uri uri, String[] projection, String sortOrder){
@@ -91,14 +101,14 @@ public class WeatherProvider extends ContentProvider{
                 WeatherEntry.COLUMN_DATE + " = ?";
         String[] selectionArgs = new String[]{location, String.valueOf(startDate)};
 
-        Cursor c = mQueryBuilder.query(db,
+        Cursor cursor = mQueryBuilder.query(db,
                 projection,
                 selection,
                 selectionArgs,
                 null,
                 null,
                 sortOrder);
-        return c;
+        return cursor;
 
     }
 
@@ -169,18 +179,151 @@ public class WeatherProvider extends ContentProvider{
 
     @Override
     public Uri insert (@NonNull Uri uri, ContentValues values){
-        Uri dummy = WeatherContract.WeatherEntry.CONTENT_URI;
-        return dummy;
+        SQLiteDatabase db = mWeatherDbHelper.getWritableDatabase();
+        int match = buildUriMatcher().match(uri);
+
+        Uri returnUri;
+
+        switch(match){
+            case WEATHER:
+                normalizeDate(values);
+                long rowId = db.insert(WeatherEntry.TABLE_NAME, null, values);
+                if (rowId == -1){
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                else{
+                    returnUri = WeatherEntry.buildUriWithRowId(rowId);
+                }
+                break;
+            case LOCATION:
+                rowId = db.insert(LocationEntry.TABLE_NAME, null, values);
+                if (rowId == -1){
+                    throw new android.database.SQLException("Failed to insert row into " + uri);
+                }
+                else{
+                    returnUri = LocationEntry.buildUriWithRowId(rowId);
+                }
+                break;
+            default:
+                throw new UnsupportedOperationException("Failed to insert row into unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return returnUri;
+    }
+
+
+    @Override
+    public int bulkInsert(Uri uri, ContentValues[] valuesArray){
+        SQLiteDatabase db = mWeatherDbHelper.getWritableDatabase();
+        int match = buildUriMatcher().match(uri);
+
+        int rowsInserted = 0;
+
+        switch(match){
+            case WEATHER:
+                db.beginTransaction();
+                try {
+                    for (ContentValues values : valuesArray) {
+                        normalizeDate(values);
+                        long rowId = db.insert(WeatherEntry.TABLE_NAME, null, values);
+                        if (rowId == -1){
+                            throw new android.database.SQLException("Failed to insert row into " + uri);
+                        }
+                        else{
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+
+                }
+                finally{
+                    db.endTransaction();
+                }
+
+                break;
+            case LOCATION:
+                db.beginTransaction();
+                try {
+                    for (ContentValues values : valuesArray) {
+                        normalizeDate(values);
+                        long rowId = db.insert(LocationEntry.TABLE_NAME, null, values);
+                        if (rowId == -1){
+                            throw new android.database.SQLException("Failed to insert row into " + uri);
+                        }
+                        else{
+                            rowsInserted++;
+                        }
+                    }
+                    db.setTransactionSuccessful();
+
+                }
+                finally{
+                    db.endTransaction();
+                }
+
+                break;
+
+            default:
+                throw new UnsupportedOperationException("Failed to insert row into unknown uri: " + uri);
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+        return rowsInserted;
     }
 
     @Override
     public int update(@NonNull Uri uri, ContentValues values, String selection, String[] selectionArgs){
-        return 0;
+        SQLiteDatabase db = mWeatherDbHelper.getWritableDatabase();
+        int match = buildUriMatcher().match(uri);
+
+        int rowsUpdated;
+
+        switch(match){
+            case WEATHER:
+                normalizeDate(values);
+                rowsUpdated = db.update(WeatherEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case LOCATION:
+                rowsUpdated = db.update(LocationEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Failed to update at unknown uri: " + uri);
+        }
+
+        if (rowsUpdated != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsUpdated;
     }
 
     @Override
     public int delete (@NonNull Uri uri, String selection, String[] selectionArgs){
-        return 0;
+        SQLiteDatabase db = mWeatherDbHelper.getWritableDatabase();
+        int match = buildUriMatcher().match(uri);
+
+        int rowsDeleted;
+
+        // official hack to make db.delete return rowsDeleted even when selection is null
+        if (selection == null){
+            selection = "1";
+        }
+
+        switch(match){
+            case WEATHER:
+                rowsDeleted = db.delete(WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            case LOCATION:
+                rowsDeleted = db.delete(LocationEntry.TABLE_NAME, selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Failed to delete at unknown uri: " + uri);
+        }
+
+        if (rowsDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+        return rowsDeleted;
     }
 
 }

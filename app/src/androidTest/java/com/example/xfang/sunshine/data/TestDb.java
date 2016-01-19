@@ -18,6 +18,7 @@ public class TestDb extends AndroidTestCase {
 
     public static final String LOG_TAG = TestDb.class.getSimpleName();
 
+    @Override
     public void setUp(){
         deleteDatabase();
     }
