@@ -74,6 +74,15 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             JSONArray array = jsonObject.getJSONArray("list");
 
+            JSONObject city = jsonObject.getJSONObject("city");
+            String cityName = city.getString("name");
+            JSONObject cityCoord = city.getJSONObject("coord");
+            double cityLongitude = cityCoord.getDouble("lon");
+            double cityLatitude = cityCoord.getDouble("lat");
+
+            Log.d(LOG_TAG, "Parsed city. Name: " + cityName + ", longitude: " + cityLongitude + ", latitude " +
+                    cityLatitude);
+
             Time time = new Time();
             time.setToNow();
             int firstDayJulian = time.getJulianDay(time.toMillis(true), time.gmtoff);
