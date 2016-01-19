@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
@@ -207,6 +208,7 @@ public class WeatherProvider extends ContentProvider{
             default:
                 throw new UnsupportedOperationException("Failed to insert row into unknown uri: " + uri);
         }
+        Log.d("WeatherProvider.insert", "Inserted a record at Uri: " + uri);
 
         getContext().getContentResolver().notifyChange(uri, null);
         return returnUri;

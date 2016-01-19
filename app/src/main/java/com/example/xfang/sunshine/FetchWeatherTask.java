@@ -43,7 +43,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         Cursor cursor = mContext.getContentResolver().query(LocationEntry.CONTENT_URI,
                 null,
                 LocationEntry.COLUMN_LOCATION_SETTING + " =? ",
-                new String[]{cityName},
+                new String[]{locationSetting},
                 null,
                 null);
         if (cursor.moveToFirst()){
@@ -82,6 +82,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             Log.d(LOG_TAG, "Parsed city. Name: " + cityName + ", longitude: " + cityLongitude + ", latitude " +
                     cityLatitude);
+
+            // add location setting to contentProvider
+            addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
             Time time = new Time();
             time.setToNow();
