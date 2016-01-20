@@ -10,12 +10,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Utilities {
 
-    public static String getReadableDate(long time){
+    public static String getReadableDate(long dateInMilliseconds){
         SimpleDateFormat dayFormat = new SimpleDateFormat("MMM dd, EEE");
-        return dayFormat.format(time);
+        return dayFormat.format(dateInMilliseconds);
     }
 
     public static String formatTemp(String input, boolean toImperial){
