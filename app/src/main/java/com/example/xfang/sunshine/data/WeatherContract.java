@@ -110,7 +110,6 @@ public class WeatherContract {
                     appendPath(location).
                     appendQueryParameter(COLUMN_DATE, String.valueOf(startDate)).
                     build();
-
         }
 
         public static String getLocationFromUri(Uri uri){
