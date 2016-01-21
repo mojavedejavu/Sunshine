@@ -54,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_viewOnMap){
-            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-            String location = sp.getString(
-                    getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_defaultValue));
+            String location = Utilities.getPreferredLocationSetting(this);
 
             Uri uri = Uri.parse("geo:0,0?").buildUpon().
                     appendQueryParameter("q",location).

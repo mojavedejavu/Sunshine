@@ -14,7 +14,7 @@ public class WeatherContract {
     public static final String PATH_LOCATION = "location";
 
     // To make it easy to query for the exact date, we normalize all dates that go into
-    // the database to the start of the the Julian day at UTC.
+    // the database to the start of the Julian day at UTC.
     public static long normalizeDate(long startDate) {
         // normalize the start date to the beginning of the (UTC) day
         Time time = new Time();
@@ -103,6 +103,16 @@ public class WeatherContract {
 
         }
 
+        public static Uri buildUriWithLocationAndStartDate(String location, long startDate){
+            startDate = normalizeDate(startDate);
+
+            return CONTENT_URI.buildUpon().
+                    appendPath(location).
+                    appendQueryParameter(COLUMN_DATE, String.valueOf(startDate)).
+                    build();
+
+        }
+
         public static String getLocationFromUri(Uri uri){
             return uri.getPathSegments().get(1);
         }
@@ -117,8 +127,8 @@ public class WeatherContract {
             }
         }
 
-        public static String getDateFromUri(Uri uri){
-            return uri.getPathSegments().get(2);
+        public static long getDateFromUri(Uri uri){
+            return Long.parseLong(uri.getPathSegments().get(2));
         }
     }
 }

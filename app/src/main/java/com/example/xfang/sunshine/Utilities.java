@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
@@ -14,7 +15,7 @@ import java.util.Date;
 
 public class Utilities {
 
-    public static String getReadableDate(long dateInMilliseconds){
+    public static String formatMillisecondsToReadableDate(long dateInMilliseconds){
         SimpleDateFormat dayFormat = new SimpleDateFormat("MMM dd, EEE");
         return dayFormat.format(dateInMilliseconds);
     }
@@ -26,5 +27,13 @@ public class Utilities {
         }
         return String.format("%.1f", output);
 
+    }
+
+    public static String getPreferredLocationSetting(Context context){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        String locationString = sp.getString(
+                context.getString(R.string.pref_location_key),
+                context.getString(R.string.pref_location_defaultValue));
+        return locationString;
     }
 }

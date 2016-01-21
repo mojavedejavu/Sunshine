@@ -1,7 +1,6 @@
 package com.example.xfang.sunshine.data;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -14,21 +13,21 @@ import android.util.Log;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
-import java.sql.SQLException;
-
 public class WeatherProvider extends ContentProvider{
 
     private WeatherDbHelper mWeatherDbHelper;
+    // TODO: refactor matcher
+    // private static final UriMatcher mUriMatcher = buildUriMatcher();
 
     public static final int WEATHER = 0;
     public static final int LOCATION = 1;
     public static final int WEATHER_WITH_LOCATION = 100;
     public static final int WEATHER_WITH_LOCATION_AND_DATE = 200;
 
-    SQLiteQueryBuilder mQueryBuilder;
+    private static final SQLiteQueryBuilder mQueryBuilder;
 
     static {
-        SQLiteQueryBuilder mQueryBuilder = new SQLiteQueryBuilder();
+        mQueryBuilder = new SQLiteQueryBuilder();
 
         String INNER_JOIN_SQL = WeatherEntry.TABLE_NAME + " INNER JOIN " +
                 LocationEntry.TABLE_NAME + " ON " +
@@ -72,7 +71,6 @@ public class WeatherProvider extends ContentProvider{
         long startDate = WeatherEntry.getStartDateFromUri(uri);
 
         if (startDate == 0){
-
             selectionArgs = new String[]{location};
         }
         else{
@@ -92,7 +90,7 @@ public class WeatherProvider extends ContentProvider{
 
     private Cursor queryWithLocationAndDate(Uri uri, String[] projection, String sortOrder){
         String location = WeatherEntry.getLocationFromUri(uri);
-        long startDate = WeatherEntry.getStartDateFromUri(uri);
+        long date = WeatherEntry.getDateFromUri(uri);
 
         SQLiteDatabase db = mWeatherDbHelper.getReadableDatabase();
 
@@ -100,7 +98,7 @@ public class WeatherProvider extends ContentProvider{
                 LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
                 WeatherEntry.TABLE_NAME + "." +
                 WeatherEntry.COLUMN_DATE + " = ?";
-        String[] selectionArgs = new String[]{location, String.valueOf(startDate)};
+        String[] selectionArgs = new String[]{location, String.valueOf(WeatherContract.normalizeDate(date))};
 
         Cursor cursor = mQueryBuilder.query(db,
                 projection,

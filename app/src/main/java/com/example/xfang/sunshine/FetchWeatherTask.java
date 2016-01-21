@@ -1,7 +1,6 @@
 package com.example.xfang.sunshine;
 
 
-import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,7 +11,6 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
 import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import com.example.xfang.sunshine.data.WeatherContract;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
@@ -29,14 +27,17 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
+public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
     String LOG_TAG = FetchWeatherTask.class.getSimpleName();
 
     final int NUM_DAYS = 7;
 
     Context mContext;
-    ArrayAdapter<String> mAdapter;
+
+    public FetchWeatherTask(Context context){
+        mContext = context;
+    }
 
     private long addLocation(String locationSetting, String cityName, double lat, double lon){
         long rowId;
@@ -66,8 +67,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return rowId;
     }
 
-    private String[] getWeatherDataFromJson(String jsonString, String locationSetting, int numDays, boolean toImperial) {
-        String LOG_TAG = "getWeatherDataFromJson";
+    private void parseFromJsonAndBulkInsert(String jsonString, String locationSetting, int numDays, boolean toImperial) {
+        String LOG_TAG = "parseFromJsonAndBulkInsert";
         String[] result = new String[numDays];
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
@@ -86,14 +87,14 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // add location setting to contentProvider
             long locationRowId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
-            Time time = new Time();
-            time.setToNow();
-            int firstDayJulian = time.getJulianDay(time.toMillis(true), time.gmtoff);
+//            Time time = new Time();
+//            time.setToNow();
+//            int firstDayJulian = time.getJulianDay(time.toMillis(true), time.gmtoff);
 
             ContentValues[] forecasts = new ContentValues[array.length()];
 
             for(int i = 0; i < array.length(); i++) {
-                long dateInMilliseconds;
+                long dateInMillisecondsAndNormalized;
                 String max;
                 String min;
                 String description;
@@ -107,7 +108,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
                 // date, humidity, pressure, windSpeed, windDirection
                 long dateInSeconds = daily.getLong("dt");
-                dateInMilliseconds = dateInSeconds * 1000;
+                dateInMillisecondsAndNormalized = WeatherContract.normalizeDate(dateInSeconds * 1000);
                 humidity = daily.getString("humidity");
                 pressure = daily.getString("pressure");
                 windSpeed = daily.getString("speed");
@@ -123,16 +124,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 description = weatherObject.getString("main");
                 weatherId = weatherObject.getString("id");
 
-                // format dailyString
-                String day = Utilities.getReadableDate(new Time().setJulianDay(firstDayJulian + i));
-                String dailyString = day + "   " + min + " / " + max + ", " + description;
-
-                result[i] = dailyString;
-                Log.d(LOG_TAG, dailyString);
-
                 ContentValues forecast = new ContentValues();
                 forecast.put(WeatherEntry.COLUMN_LOC_KEY, locationRowId);
-                forecast.put(WeatherEntry.COLUMN_DATE, dateInMilliseconds);
+                forecast.put(WeatherEntry.COLUMN_DATE, dateInMillisecondsAndNormalized);
                 forecast.put(WeatherEntry.COLUMN_WEATHER_ID, weatherId);
                 forecast.put(WeatherEntry.COLUMN_SHORT_DESC, description);
                 forecast.put(WeatherEntry.COLUMN_MAX_TEMP, max);
@@ -150,7 +144,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             Log.d(LOG_TAG, "JSON parsing error: " + e);
         }
 
-        return result;
     }
 
     private URL buildQueryURL(String locationSetting, int numDays){
@@ -193,13 +186,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         return isImperial;
     }
 
-    public FetchWeatherTask(Context context, ArrayAdapter<String> adapter){
-        mContext = context;
-        mAdapter = adapter;
-    }
-
     @Override
-    protected String[] doInBackground(String... params){
+    protected Void doInBackground(String... params){
         // declare these outside of the try block so they can be closed
         HttpURLConnection urlConnection = null;
         BufferedReader reader = null;
@@ -215,7 +203,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
-            // read the query response
+            // get the query response
             reader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
             StringBuilder buffer = new StringBuilder();
             String line;
@@ -225,13 +213,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             Log.d(LOG_TAG, buffer.toString());
 
             // parse the response
-            String[] parsedForecasts = getWeatherDataFromJson(buffer.toString(), locationSetting, numDays, unitsPrefIsImperial());
-            return parsedForecasts;
+            parseFromJsonAndBulkInsert(buffer.toString(), locationSetting, numDays, unitsPrefIsImperial());
         }
         catch(IOException e){
             Log.e(LOG_TAG, "Error ", e);
             e.printStackTrace();
-            return null;
         }
 
         finally{
@@ -247,14 +233,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
                 }
             }
         }
-    }
 
-    @Override
-    protected void onPostExecute(String[] array){
-        if (array != null) {
-            mAdapter.clear();
-            mAdapter.addAll(array);
-        }
-
+        return null;
     }
 }
