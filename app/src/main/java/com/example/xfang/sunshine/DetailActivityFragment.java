@@ -30,8 +30,6 @@ public class DetailActivityFragment extends Fragment
     private static final int DETAIL_LOADER_ID = 10;
 
     String mForecastString;
-    Uri mQueryUri;
-    TextView mTextView;
     ShareActionProvider mShareActionProvider;
 
     final String SHARE_HASHTAG = "#SunshineApp";
@@ -45,6 +43,8 @@ public class DetailActivityFragment extends Fragment
             WeatherEntry.COLUMN_MIN_TEMP
     };
 
+    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // must change.
     static final int COL_WEATHER_ID = 0;
     static final int COL_WEATHER_DATE = 1;
     static final int COL_WEATHER_DESC = 2;
@@ -77,8 +77,6 @@ public class DetailActivityFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        mTextView = (TextView) rootView.findViewById(R.id.detail_activity_forecast_string);
-
         return rootView;
     }
 
@@ -89,12 +87,15 @@ public class DetailActivityFragment extends Fragment
 
         MenuItem shareMenuItem = menu.findItem(R.id.action_share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(shareMenuItem);
-        if (mShareActionProvider != null){
+
+        // If onLoadFinished happens before this, we can go ahead and set the share intent now.
+        if (mForecastString != null){
             mShareActionProvider.setShareIntent(createShareIntent());
         }
     }
 
     private Intent createShareIntent(){
+        Log.d(LOG_TAG, "---> mForecastString: " + mForecastString);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastString + " " + SHARE_HASHTAG);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
@@ -104,31 +105,38 @@ public class DetailActivityFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        Log.d(LOG_TAG," ---> onCreateLoader");
-
         Intent intent = getActivity().getIntent();
-        if (intent != null){
-            mQueryUri = intent.getData();
-        }
-        Log.d(LOG_TAG, " ---> uri: " + mQueryUri);
+        if (intent != null) {
+            Uri queryUri = intent.getData();
 
-        return new CursorLoader(
-                getActivity(),
-                mQueryUri,
-                FORECAST_COLUMNS, // projection
-                null, // selection
-                null, // selectionArgs
-                null  // sortOrder
-        );
+            return new CursorLoader(
+                    getActivity(),
+                    queryUri,
+                    FORECAST_COLUMNS, // projection
+                    null, // selection
+                    null, // selectionArgs
+                    null  // sortOrder
+            );
+        }
+        else{
+            return null;
+        }
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
-        Log.d(LOG_TAG," ---> onLoadFinished");
-        if (cursor.moveToFirst()) {
-            mForecastString = convertCursorRowToUXFormat(cursor);
-            mTextView.setText(mForecastString);
+        if (!cursor.moveToFirst()) {
+            return;
         }
+        mForecastString = convertCursorRowToUXFormat(cursor);
+
+        TextView textView = (TextView)getView().findViewById(R.id.detail_activity_forecast_string);
+        textView.setText(mForecastString);
+
+        if (mShareActionProvider != null){
+            mShareActionProvider.setShareIntent(createShareIntent());
+        }
+
     }
 
     @Override
