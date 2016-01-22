@@ -16,7 +16,7 @@ public class ForecastAdapter extends CursorAdapter{
         super(context, c, flags);
     }
 
-    public static String convertCursorRowToUXFormat(Cursor c){
+    private static String convertCursorRowToUXFormat(Cursor c){
         double max = c.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
         double min = c.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         long dateInMilliseconds = c.getLong(ForecastFragment.COL_WEATHER_DATE);

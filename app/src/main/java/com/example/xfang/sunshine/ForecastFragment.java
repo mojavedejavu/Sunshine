@@ -30,7 +30,7 @@ public class ForecastFragment extends Fragment
     static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private static final int LOADER_ID = 0;
 
-    public static final String[] FORECAST_COLUMNS = {
+    private static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
             WeatherEntry.COLUMN_DATE,
             WeatherEntry.COLUMN_SHORT_DESC,
@@ -64,6 +64,7 @@ public class ForecastFragment extends Fragment
         updateWeather();
     }
 
+    @Override
     public void onActivityCreated (Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
         getLoaderManager().initLoader(LOADER_ID, null, this);
