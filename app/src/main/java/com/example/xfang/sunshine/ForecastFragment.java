@@ -57,11 +57,16 @@ public class ForecastFragment extends Fragment
     public ForecastFragment() {
     }
 
+    // fetch weather and restart loader
+    public void onLoactionChanged(){
+        fetchWeather();
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
 
     @Override
     public void onStart(){
         super.onStart();
-        updateWeather();
+        fetchWeather();
     }
 
     @Override
@@ -119,7 +124,7 @@ public class ForecastFragment extends Fragment
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            updateWeather();
+            fetchWeather();
             return true;
         }
 
@@ -127,7 +132,7 @@ public class ForecastFragment extends Fragment
     }
 
 
-    private void updateWeather(){
+    private void fetchWeather(){
         FetchWeatherTask task = new FetchWeatherTask(getActivity());
         String location = Utilities.getPreferredLocationSetting(getActivity());
         task.execute(location);

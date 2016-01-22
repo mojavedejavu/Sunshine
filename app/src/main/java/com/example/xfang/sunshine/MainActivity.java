@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -16,13 +17,28 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String mLocation;
+    private static final String FORECASTFRAGMENT_TAG = "forecastFragmentTag";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mLocation = Utilities.getPreferredLocationSetting(this);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.main_activity_fragment_container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
+                    .commit();
+        }
+
+        // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        // fab
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -31,6 +47,21 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        String userLocationSetting = Utilities.getPreferredLocationSetting(this);
+        if (!mLocation.equals(userLocationSetting)){
+            ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().
+                    findFragmentByTag(FORECASTFRAGMENT_TAG);
+
+            forecastFragment.onLoactionChanged();
+
+            mLocation = userLocationSetting;
+        }
     }
 
     @Override

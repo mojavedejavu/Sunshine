@@ -95,7 +95,6 @@ public class DetailActivityFragment extends Fragment
     }
 
     private Intent createShareIntent(){
-        Log.d(LOG_TAG, "---> mForecastString: " + mForecastString);
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
         shareIntent.putExtra(Intent.EXTRA_TEXT, mForecastString + " " + SHARE_HASHTAG);
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);

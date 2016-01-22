@@ -87,10 +87,6 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             // add location setting to contentProvider
             long locationRowId = addLocation(locationSetting, cityName, cityLatitude, cityLongitude);
 
-//            Time time = new Time();
-//            time.setToNow();
-//            int firstDayJulian = time.getJulianDay(time.toMillis(true), time.gmtoff);
-
             ContentValues[] forecasts = new ContentValues[array.length()];
 
             for(int i = 0; i < array.length(); i++) {

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_activity_container"
     android:fitsSystemWindows="true"
     tools:context="com.example.xfang.sunshine.MainActivity">
 
@@ -21,7 +22,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
+    <!--<include layout="@layout/main_activity_fragment_container" />-->
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_activity_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="40dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
