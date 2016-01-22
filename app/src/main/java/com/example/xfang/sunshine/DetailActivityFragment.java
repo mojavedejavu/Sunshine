@@ -1,9 +1,12 @@
 package com.example.xfang.sunshine;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 public class DetailActivityFragment extends Fragment {
 
     String mForecastString;
+    Uri mQueryUri;
     ShareActionProvider mShareActionProvider;
 
     final String SHARE_HASHTAG = "#SunshineApp";
@@ -34,9 +38,18 @@ public class DetailActivityFragment extends Fragment {
 
         Intent intent = getActivity().getIntent();
         if (intent != null && intent.hasExtra(Intent.EXTRA_TEXT)){
-            mForecastString = intent.getStringExtra(Intent.EXTRA_TEXT);
+            mQueryUri = intent.getData();
         }
 
+        Cursor cursor = getActivity().getContentResolver().query(
+                mQueryUri,
+                ForecastFragment.FORECAST_COLUMNS,
+                null,
+                null,
+                null);
+
+        cursor.moveToFirst();
+        mForecastString = ForecastAdapter.convertCursorRowToUXFormat(cursor);
         TextView textView = (TextView) rootView.findViewById(R.id.detail_activity_forecast_string);
         textView.setText(mForecastString);
 

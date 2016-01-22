@@ -1,6 +1,7 @@
 package com.example.xfang.sunshine;
 
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
@@ -28,7 +30,7 @@ public class ForecastFragment extends Fragment
     static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private static final int LOADER_ID = 0;
 
-    private static final String[] FORECAST_COLUMNS = {
+    public static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
             WeatherEntry.COLUMN_DATE,
             WeatherEntry.COLUMN_SHORT_DESC,
@@ -83,15 +85,19 @@ public class ForecastFragment extends Fragment
         final ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                String forecastText = mAdapter.getItem(position);
-//                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
-//                detailActivityIntent.putExtra(Intent.EXTRA_TEXT, forecastText);
-//                startActivity(detailActivityIntent);
-//            }
-//        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Cursor cursor = (Cursor) mForecastAdapter.getItem(position);
+                String locationSetting = cursor.getString(ForecastFragment.COL_LOCATION_SETTING);
+                long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
+                Uri uri = WeatherEntry.buildUriWithLocationAndDate(locationSetting, date);
+
+                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
+                detailActivityIntent.setData(uri);
+                startActivity(detailActivityIntent);
+            }
+        });
 
 
         return rootView;
