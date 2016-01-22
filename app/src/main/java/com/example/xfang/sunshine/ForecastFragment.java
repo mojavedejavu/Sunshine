@@ -17,16 +17,40 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
+import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
 
 public class ForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
 
-    final String LOG_TAG = ForecastFragment.class.getSimpleName();
+    ForecastAdapter mForecastAdapter;
 
+    static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private static final int LOADER_ID = 0;
 
-    ForecastAdapter mForecastAdapter;
+    private static final String[] FORECAST_COLUMNS = {
+            WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
+            WeatherEntry.COLUMN_DATE,
+            WeatherEntry.COLUMN_SHORT_DESC,
+            WeatherEntry.COLUMN_MAX_TEMP,
+            WeatherEntry.COLUMN_MIN_TEMP,
+            LocationEntry.COLUMN_LOCATION_SETTING,
+            WeatherEntry.COLUMN_WEATHER_ID,
+            LocationEntry.COLUMN_COORD_LAT,
+            LocationEntry.COLUMN_COORD_LONG
+    };
+
+    // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
+    // must change.
+    static final int COL_WEATHER_ID = 0;
+    static final int COL_WEATHER_DATE = 1;
+    static final int COL_WEATHER_DESC = 2;
+    static final int COL_WEATHER_MAX_TEMP = 3;
+    static final int COL_WEATHER_MIN_TEMP = 4;
+    static final int COL_LOCATION_SETTING = 5;
+    static final int COL_WEATHER_CONDITION_ID = 6;
+    static final int COL_COORD_LAT = 7;
+    static final int COL_COORD_LONG = 8;
 
     public ForecastFragment() {
     }
@@ -110,7 +134,7 @@ public class ForecastFragment extends Fragment
         return new CursorLoader(
                 getActivity(),
                 WeatherEntry.buildUriWithLocationAndStartDate(location, System.currentTimeMillis()),
-                null, // projection
+                FORECAST_COLUMNS, // projection
                 null, // selection
                 null, // selectionArgs
                 WeatherEntry.COLUMN_DATE + " ASC "  // sortOrder

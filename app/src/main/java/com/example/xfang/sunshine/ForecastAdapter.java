@@ -17,15 +17,10 @@ public class ForecastAdapter extends CursorAdapter{
     }
 
     private String convertCursorRowToUXFormat(Cursor c){
-        int idx_max = c.getColumnIndex(WeatherEntry.COLUMN_MAX_TEMP);
-        int idx_min = c.getColumnIndex(WeatherEntry.COLUMN_MIN_TEMP);
-        int idx_date = c.getColumnIndex(WeatherEntry.COLUMN_DATE);
-        int idx_description = c.getColumnIndex(WeatherEntry.COLUMN_SHORT_DESC);
-
-        double max = c.getDouble(idx_max);
-        double min = c.getDouble(idx_min);
-        long dateInMilliseconds = c.getLong(idx_date);
-        String description = c.getString(idx_description);
+        double max = c.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
+        double min = c.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
+        long dateInMilliseconds = c.getLong(ForecastFragment.COL_WEATHER_DATE);
+        String description = c.getString(ForecastFragment.COL_WEATHER_DESC);
 
         String day = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
 
