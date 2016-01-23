@@ -37,8 +37,17 @@ public class ForecastAdapter extends CursorAdapter{
 
     @Override
     public void bindView(View view, Context context, Cursor cursor){
-        TextView tv = (TextView) view.findViewById(R.id.list_item_textview);
-        tv.setText(convertCursorRowToUXFormat(cursor));
+        TextView dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
+        TextView descView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+        TextView highView = (TextView) view.findViewById(R.id.list_item_high_textview);
+        TextView lowView = (TextView) view.findViewById(R.id.list_item_low_textview);
+
+        long dateInMilliseconds = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
+        String readableDate = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
+        dateView.setText(readableDate);
+        descView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
+        highView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MAX_TEMP));
+        lowView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MIN_TEMP));
     }
 
 }

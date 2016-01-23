@@ -27,7 +27,7 @@
         android:id="@+id/main_activity_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="40dp"/>
+        android:paddingTop="60dp"/>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

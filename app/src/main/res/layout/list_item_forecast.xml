@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation = "horizontal"
-    android:padding="16dp">
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -22,16 +23,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
-            android:textSize="20sp"
-            android:text="tomorrow"
+            android:textSize="14sp"
             android:gravity="left" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_forecast_textview"
-            android:textSize="20sp"
-            android:text="sunny as fuck"
+            android:textSize="14sp"
             android:gravity="left" />
     </LinearLayout>
 
@@ -44,25 +43,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_high_textview"
-            android:textSize="20sp"
-            android:text="17"
+            android:textSize="14sp"
             android:gravity="center" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_low_textview"
-            android:textSize="20sp"
-            android:text="-42"
+            android:textSize="14sp"
             android:gravity="center" />
     </LinearLayout>
-
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:id="@+id/list_item_textview"
-        android:textSize="20sp"
-        android:layout_weight="1">
-    </TextView>
 
 </LinearLayout>
