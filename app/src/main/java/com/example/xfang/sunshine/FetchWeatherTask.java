@@ -112,8 +112,8 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
                 // min and max temp
                 JSONObject tempObject = daily.getJSONObject("temp");
-                max = Utilities.formatTemp(tempObject.getString("max"), toImperial);
-                min = Utilities.formatTemp(tempObject.getString("min"), toImperial);
+                max = Utilities.formatTemp(mContext,tempObject.getString("max"), toImperial);
+                min = Utilities.formatTemp(mContext,tempObject.getString("min"), toImperial);
 
                 // desc and weatherId
                 JSONObject weatherObject = (JSONObject) daily.getJSONArray("weather").get(0);

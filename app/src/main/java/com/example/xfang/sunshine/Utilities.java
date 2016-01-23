@@ -20,12 +20,12 @@ public class Utilities {
         return dayFormat.format(dateInMilliseconds);
     }
 
-    public static String formatTemp(String input, boolean toImperial){
+    public static String formatTemp(Context context, String input, boolean toImperial){
         double output = new Double(input);
         if (toImperial) {
             output = output * 1.8 + 32;
         }
-        return String.format("%.1f", output);
+        return String.format(context.getString(R.string.format_temperature), output);
 
     }
 
