@@ -57,22 +57,38 @@ public class ForecastAdapter extends CursorAdapter{
             layoutId = R.layout.list_item_forecast;
         }
 
-        return LayoutInflater.from(context).inflate(layoutId, parent, false);
+        View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
+
+        return view;
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor){
-        TextView dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
-        TextView descView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
-        TextView highView = (TextView) view.findViewById(R.id.list_item_high_textview);
-        TextView lowView = (TextView) view.findViewById(R.id.list_item_low_textview);
-
         long dateInMilliseconds = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
         String readableDate = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
-        dateView.setText(readableDate);
-        descView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
-        highView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MAX_TEMP));
-        lowView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MIN_TEMP));
+
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+        viewHolder.dateView.setText(readableDate);
+        viewHolder.descView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
+        viewHolder.highView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MAX_TEMP));
+        viewHolder.lowView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MIN_TEMP));
     }
 
+    public class ViewHolder{
+        private View mView;
+        TextView dateView;
+        TextView descView;
+        TextView highView;
+        TextView lowView;
+
+        public ViewHolder(View view){
+            mView = view;
+            dateView = (TextView) mView.findViewById(R.id.list_item_date_textview);
+            descView = (TextView) mView.findViewById(R.id.list_item_forecast_textview);
+            highView = (TextView) mView.findViewById(R.id.list_item_high_textview);
+            lowView = (TextView) mView.findViewById(R.id.list_item_low_textview);
+        }
+    }
 }
