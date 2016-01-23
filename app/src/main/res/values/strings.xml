@@ -1,4 +1,5 @@
-<resources>
+<resources
+    xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">Sunshine</string>
     
     <string name="action_settings">Settings</string>
@@ -8,6 +9,11 @@
     
     <string name="title_activity_detail">Detail</string>
     <string name="title_activity_settings">Settings</string>
+
+    <!-- Strings for friendly date display: today, tomorrow, day of the week -->
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="format_full_friendly_date"><xliff:g id="day">%1$s</xliff:g>, <xliff:g id="date">%2$s</xliff:g></string>
 
     <!-- Strings related to Settings -->
     <string name="pref_location_key">location</string>

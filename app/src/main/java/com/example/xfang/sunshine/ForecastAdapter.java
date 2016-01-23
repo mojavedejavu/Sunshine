@@ -12,6 +12,9 @@ import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 
 public class ForecastAdapter extends CursorAdapter{
 
+    private static final int VIEW_TYPE_TODAY = 0;
+    private static final int VIEW_TYPE_NOT_TODAY = 1;
+
     public ForecastAdapter(Context context, Cursor c, int flags){
         super(context, c, flags);
     }
@@ -29,10 +32,32 @@ public class ForecastAdapter extends CursorAdapter{
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent){
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
+    public int getViewTypeCount(){
+        return 2;
+    }
 
-        return view;
+    @Override
+    public int getItemViewType(int position){
+        if (position == 0){
+            return VIEW_TYPE_TODAY;
+        }
+        else{
+            return VIEW_TYPE_NOT_TODAY;
+        }
+    }
+
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent){
+        int layoutId;
+        int viewType = getItemViewType(cursor.getPosition());
+        if (viewType == VIEW_TYPE_TODAY){
+            layoutId = R.layout.list_item_forecast_today;
+        }
+        else{
+            layoutId = R.layout.list_item_forecast;
+        }
+
+        return LayoutInflater.from(context).inflate(layoutId, parent, false);
     }
 
     @Override
