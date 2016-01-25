@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
+import org.w3c.dom.Text;
+
 public class DetailActivityFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>
 {
@@ -34,13 +36,26 @@ public class DetailActivityFragment extends Fragment
 
     final String SHARE_HASHTAG = "#SunshineApp";
 
+    TextView mSmartDateView;
+    TextView mDateView;
+    TextView mDescView;
+    TextView mHighView;
+    TextView mLowView;
+    TextView mHumidityView;
+    TextView mWindView;
+    TextView mPressureView;
 
-    private static final String[] FORECAST_COLUMNS = {
+    private static final String[] DETAIL_FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
             WeatherEntry.COLUMN_DATE,
             WeatherEntry.COLUMN_SHORT_DESC,
             WeatherEntry.COLUMN_MAX_TEMP,
-            WeatherEntry.COLUMN_MIN_TEMP
+            WeatherEntry.COLUMN_MIN_TEMP,
+            WeatherEntry.COLUMN_HUMIDITY,
+            WeatherEntry.COLUMN_WIND_SPEED,
+            WeatherEntry.COLUMN_DEGREES,
+            WeatherEntry.COLUMN_PRESSURE,
+            WeatherEntry.COLUMN_WEATHER_ID
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -50,6 +65,12 @@ public class DetailActivityFragment extends Fragment
     static final int COL_WEATHER_DESC = 2;
     static final int COL_WEATHER_MAX_TEMP = 3;
     static final int COL_WEATHER_MIN_TEMP = 4;
+    static final int COL_WEATHER_HUMIDITY = 5;
+    static final int COL_WEATHER_WIND_SPEED = 6;
+    static final int COL_WEATHER_DEGREES = 7;
+    static final int COL_WEATHER_PRESSURE = 8;
+    static final int COL_WEATHER_ICON_ID = 9;
+
 
     private static String convertCursorRowToUXFormat(Cursor c){
         double max = c.getDouble(COL_WEATHER_MAX_TEMP);
@@ -77,6 +98,16 @@ public class DetailActivityFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        mSmartDateView = (TextView) rootView.findViewById(R.id.list_item_smart_date_textview);
+        mDateView = (TextView) rootView.findViewById(R.id.list_item_date_textview);
+        mDescView = (TextView) rootView.findViewById(R.id.list_item_description_textview);
+        mHighView = (TextView) rootView.findViewById(R.id.list_item_high_textview);
+        mLowView = (TextView) rootView.findViewById(R.id.list_item_low_textview);
+        mHumidityView = (TextView) rootView.findViewById(R.id.list_item_humidity_textview);
+        mWindView = (TextView) rootView.findViewById(R.id.list_item_wind_textview);
+        mPressureView = (TextView) rootView.findViewById(R.id.list_item_pressure_textview);
+
         return rootView;
     }
 
@@ -111,7 +142,7 @@ public class DetailActivityFragment extends Fragment
             return new CursorLoader(
                     getActivity(),
                     queryUri,
-                    FORECAST_COLUMNS, // projection
+                    DETAIL_FORECAST_COLUMNS, // projection
                     null, // selection
                     null, // selectionArgs
                     null  // sortOrder
@@ -123,23 +154,40 @@ public class DetailActivityFragment extends Fragment
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
+    public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (!cursor.moveToFirst()) {
             return;
         }
-        mForecastString = convertCursorRowToUXFormat(cursor);
 
-        TextView textView = (TextView)getView().findViewById(R.id.detail_activity_forecast_string);
-        textView.setText(mForecastString);
+        int weatherId = cursor.getInt(COL_WEATHER_ICON_ID);
+
+        long dateInMilliseconds = cursor.getLong(COL_WEATHER_DATE);
+        String readableDate = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
+
+        String description = cursor.getString(COL_WEATHER_DESC);
+        String maxTemp = cursor.getString(COL_WEATHER_MAX_TEMP);
+        String minTemp = cursor.getString(COL_WEATHER_MIN_TEMP);
+        String humidityString = getActivity().getString(R.string.humidity) + ": " +
+                cursor.getString(COL_WEATHER_HUMIDITY);
+        String windString = getActivity().getString(R.string.wind) + ": " +
+                cursor.getString(COL_WEATHER_WIND_SPEED);
+        String pressureString = String.format(getActivity().getString(R.string.format_pressure),
+                cursor.getDouble(COL_WEATHER_PRESSURE));
+
+        mDateView.setText(readableDate);
+        mDescView.setText(description);
+        mHighView.setText(maxTemp);
+        mLowView.setText(minTemp);
+        mHumidityView.setText(humidityString);
+        mWindView.setText(windString);
+        mPressureView.setText(pressureString);
 
         if (mShareActionProvider != null){
             mShareActionProvider.setShareIntent(createShareIntent());
         }
-
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
     }
-
 }

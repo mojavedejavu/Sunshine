@@ -86,7 +86,7 @@ public class ForecastAdapter extends CursorAdapter{
         public ViewHolder(View view){
             mView = view;
             dateView = (TextView) mView.findViewById(R.id.list_item_date_textview);
-            descView = (TextView) mView.findViewById(R.id.list_item_forecast_textview);
+            descView = (TextView) mView.findViewById(R.id.list_item_description_textview);
             highView = (TextView) mView.findViewById(R.id.list_item_high_textview);
             lowView = (TextView) mView.findViewById(R.id.list_item_low_textview);
         }

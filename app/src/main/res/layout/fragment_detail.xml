@@ -1,17 +1,123 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!-- wrap everything in a ScrollView so that the content is vertically scrollable-->
+<ScrollView
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.xfang.sunshine.DetailActivityFragment"
-    tools:showIn="@layout/activity_detail">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_activity_forecast_string"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.example.xfang.sunshine.DetailActivityFragment"
+        tools:showIn="@layout/activity_detail"
+        android:padding="16dp">
 
-</FrameLayout>
+        <!-- smart date -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_smart_date_textview"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:text="hard_coded_smart_date_woohoo!!!"
+            android:paddingBottom="2dp" />
+
+        <!-- date -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_date_textview"
+            android:textSize="20sp"
+            android:gravity="left" />
+
+        <!-- high       icon    -->
+        <!-- low   description -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation = "horizontal"
+            android:gravity="center"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <!-- high -->
+            <!-- low -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation = "vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_high_textview"
+                    android:textSize="30sp"
+                    android:gravity="center"
+                    android:padding="4dp" />
+
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_low_textview"
+                    android:textSize="30sp"
+                    android:gravity="center"
+                    android:padding="4dp" />
+            </LinearLayout>
+
+            <!--    icon     -->
+            <!-- description -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation = "vertical"
+                android:gravity="center"
+                android:layout_weight="1">
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_icon"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list_item_description_textview"
+                    android:textSize="20sp"
+                    android:gravity="center"
+                    android:padding="4dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- humidity -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_humidity_textview"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+        <!-- wind -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_wind_textview"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+
+        <!-- pressure -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/list_item_pressure_textview"
+            android:textSize="20sp"
+            android:gravity="left"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp" />
+    </LinearLayout>
+</ScrollView>

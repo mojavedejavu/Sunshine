@@ -7,7 +7,7 @@
     <string name="action_viewOnMap">View On Map</string>
     <string name="action_share">Share</string>
     
-    <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_detail">Details</string>
     <string name="title_activity_settings">Settings</string>
 
     <!-- Strings for friendly date display: today, tomorrow, day of the week -->
@@ -17,6 +17,29 @@
 
     <!-- Temperature formats in degrees [CHAR LIMIT=NONE] -->
     <string name="format_temperature"><xliff:g id="temp">%1.0f</xliff:g>\u00B0</string>
+
+    <!-- humidity, wind, pressure-->
+    <string name="humidity">HUMIDITY</string>
+    <string name="wind">WIND</string>
+    <string name="pressure">PRESSURE</string>
+
+
+
+
+    <!-- Windspeed formats -->
+    <!-- Wind in mph [CHAR LIMIT=25] -->
+    <string name="format_wind_mph">Wind: <xliff:g id="speed">%1$1.0f</xliff:g> mph <xliff:g id="direction">%2$s</xliff:g></string>
+    <!-- Wind in kph [CHAR LIMIT=25] -->
+    <string name="format_wind_kmh">Wind: <xliff:g id="speed">%1$1.0f</xliff:g> km/h <xliff:g id="direction">%2$s</xliff:g></string>
+
+    <!-- Pressure format CHAR LIMIT=25] -->
+    <string name="format_pressure">Pressure: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>
+
+    <!-- Humidity format CHAR LIMIT=25]-->
+    <string name="format_humidity">Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
+
+
+
 
     <!-- Strings related to Settings -->
     <string name="pref_location_key">location</string>
