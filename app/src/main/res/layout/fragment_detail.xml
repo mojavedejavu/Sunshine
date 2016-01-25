@@ -78,8 +78,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/list_item_icon"
-                    android:src="@mipmap/ic_launcher" />
+                    android:id="@+id/list_item_icon"/>
 
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"

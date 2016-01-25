@@ -6,9 +6,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 
 public class ForecastAdapter extends CursorAdapter{
 
@@ -74,6 +73,17 @@ public class ForecastAdapter extends CursorAdapter{
         viewHolder.descView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
         viewHolder.highView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MAX_TEMP));
         viewHolder.lowView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MIN_TEMP));
+
+        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ICON_ID);
+        int viewType = getItemViewType(cursor.getPosition());
+        if (viewType == VIEW_TYPE_TODAY){
+            int artResource = Utilities.getArtResourceForWeatherCondition(weatherId);
+            viewHolder.iconView.setImageResource(artResource);
+        }
+        else{
+            int icResource = Utilities.getIconResourceForWeatherCondition(weatherId);
+            viewHolder.iconView.setImageResource(icResource);
+        }
     }
 
     public class ViewHolder{
@@ -82,6 +92,7 @@ public class ForecastAdapter extends CursorAdapter{
         TextView descView;
         TextView highView;
         TextView lowView;
+        ImageView iconView;
 
         public ViewHolder(View view){
             mView = view;
@@ -89,6 +100,7 @@ public class ForecastAdapter extends CursorAdapter{
             descView = (TextView) mView.findViewById(R.id.list_item_description_textview);
             highView = (TextView) mView.findViewById(R.id.list_item_high_textview);
             lowView = (TextView) mView.findViewById(R.id.list_item_low_textview);
+            iconView = (ImageView) mView.findViewById(R.id.list_item_icon);
         }
     }
 }
