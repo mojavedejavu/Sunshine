@@ -39,7 +39,8 @@ public class ForecastFragment extends Fragment
             LocationEntry.COLUMN_LOCATION_SETTING,
             WeatherEntry.COLUMN_WEATHER_ID,
             LocationEntry.COLUMN_COORD_LAT,
-            LocationEntry.COLUMN_COORD_LONG
+            LocationEntry.COLUMN_COORD_LONG,
+            WeatherEntry.COLUMN_WEATHER_ID
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -53,6 +54,7 @@ public class ForecastFragment extends Fragment
     static final int COL_WEATHER_CONDITION_ID = 6;
     static final int COL_COORD_LAT = 7;
     static final int COL_COORD_LONG = 8;
+    static final int COL_WEATHER_ICON_ID = 9;
 
     public ForecastFragment() {
     }

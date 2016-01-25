@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v7.widget.ShareActionProvider;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
@@ -44,6 +45,8 @@ public class DetailActivityFragment extends Fragment
     TextView mHumidityView;
     TextView mWindView;
     TextView mPressureView;
+
+    ImageView mIconView;
 
     private static final String[] DETAIL_FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
@@ -107,6 +110,8 @@ public class DetailActivityFragment extends Fragment
         mHumidityView = (TextView) rootView.findViewById(R.id.list_item_humidity_textview);
         mWindView = (TextView) rootView.findViewById(R.id.list_item_wind_textview);
         mPressureView = (TextView) rootView.findViewById(R.id.list_item_pressure_textview);
+
+        mIconView = (ImageView) rootView.findViewById(R.id.list_item_icon);
 
         return rootView;
     }
@@ -181,6 +186,8 @@ public class DetailActivityFragment extends Fragment
         mHumidityView.setText(humidityString);
         mWindView.setText(windString);
         mPressureView.setText(pressureString);
+
+        mIconView.setImageResource(Utilities.getArtResourceForWeatherCondition(weatherId));
 
         if (mShareActionProvider != null){
             mShareActionProvider.setShareIntent(createShareIntent());
