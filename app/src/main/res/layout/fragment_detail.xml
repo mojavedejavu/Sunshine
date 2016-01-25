@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_smart_date_textview"
             android:textSize="20sp"
-            android:gravity="left"
+            android:gravity="start"
             android:text="hard_coded_smart_date_woohoo!!!"
             android:paddingBottom="2dp" />
 
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
             android:textSize="20sp"
-            android:gravity="left" />
+            android:gravity="start" />
 
         <!-- high       icon    -->
         <!-- low   description -->
@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_humidity_textview"
             android:textSize="20sp"
-            android:gravity="left"
+            android:gravity="start"
             android:paddingTop="4dp"
             android:paddingBottom="4dp" />
 
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_wind_textview"
             android:textSize="20sp"
-            android:gravity="left"
+            android:gravity="start"
             android:paddingTop="4dp"
             android:paddingBottom="4dp" />
 
@@ -116,7 +116,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_pressure_textview"
             android:textSize="20sp"
-            android:gravity="left"
+            android:gravity="start"
             android:paddingTop="4dp"
             android:paddingBottom="4dp" />
     </LinearLayout>

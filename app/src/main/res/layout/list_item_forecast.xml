@@ -23,14 +23,14 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
             android:textSize="14sp"
-            android:gravity="left" />
+            android:gravity="start" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_description_textview"
             android:textSize="14sp"
-            android:gravity="left" />
+            android:gravity="start" />
     </LinearLayout>
 
     <LinearLayout

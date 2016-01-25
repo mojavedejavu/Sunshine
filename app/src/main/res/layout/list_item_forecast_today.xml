@@ -17,7 +17,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
             android:textSize="20sp"
-            android:text="tomorrow"
             android:gravity="center" />
 
         <TextView
@@ -25,7 +24,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_high_textview"
             android:textSize="20sp"
-            android:text="17"
             android:gravity="center" />
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -33,7 +31,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_low_textview"
             android:textSize="20sp"
-            android:text="-42"
             android:gravity="center" />
     </LinearLayout>
 
@@ -56,7 +53,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/list_item_description_textview"
             android:textSize="20sp"
-            android:text="sunny as fuck"
             android:gravity="center"
             android:layout_gravity="center" />
 
