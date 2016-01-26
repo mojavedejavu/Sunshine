@@ -24,21 +24,10 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!-- version 1 -->
-    <!--<include layout="@layout/main_activity_fragment_container" />-->
-
-    <!-- version 2 -->
-    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-        <!--android:id="@+id/main_activity_fragment_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:paddingTop="60dp"/>-->
-
-    <!-- version 3 -->
-    <!-- TODO: wrapping the fragment within a layout didn't solve the overlap issue. -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
         <fragment
             xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -53,8 +42,14 @@
             android:tag="@string/forecast_fragment_tag">
         </fragment>
 
-    </LinearLayout>
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:id="@+id/weather_detail_container">
+        </FrameLayout>
 
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -65,5 +60,3 @@
         android:src="@android:drawable/ic_dialog_email" />
 
 </android.support.design.widget.CoordinatorLayout>
-
-
