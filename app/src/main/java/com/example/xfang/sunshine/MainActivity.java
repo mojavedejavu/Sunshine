@@ -18,7 +18,7 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private static String mLocation;
-    private static final String FORECASTFRAGMENT_TAG = "forecastFragmentTag";
+    //private static final String FORECASTFRAGMENT_TAG = "forecastFragmentTag";
 
 
     @Override
@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity {
 
         mLocation = Utilities.getPreferredLocationSetting(this);
 
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_activity_fragment_container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-                    .commit();
-        }
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.main_activity_fragment_container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
+//                    .commit();
+//        }
 
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -55,8 +55,9 @@ public class MainActivity extends AppCompatActivity {
 
         String userLocationSetting = Utilities.getPreferredLocationSetting(this);
         if (!mLocation.equals(userLocationSetting)){
+            String tag = getString(R.string.forecast_fragment_tag);
             ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().
-                    findFragmentByTag(FORECASTFRAGMENT_TAG);
+                    findFragmentByTag(tag);
 
             forecastFragment.onLoactionChanged();
 

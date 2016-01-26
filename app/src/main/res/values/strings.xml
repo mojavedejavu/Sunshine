@@ -39,7 +39,7 @@
     <string name="format_humidity">Humidity: <xliff:g id="humidity">%1.0f</xliff:g> %%</string>
 
 
-
+    <string name="forecast_fragment_tag">forecastFragmentTag</string>
 
     <!-- Strings related to Settings -->
     <string name="pref_location_key">location</string>

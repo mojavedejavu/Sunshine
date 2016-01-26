@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,7 +12,8 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:theme="@style/AppTheme.AppBarOverlay"
+        android:id="@+id/appBarLayout">
 
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
@@ -22,12 +24,33 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <!-- version 1 -->
     <!--<include layout="@layout/main_activity_fragment_container" />-->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_activity_fragment_container"
+
+    <!-- version 2 -->
+    <!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+        <!--android:id="@+id/main_activity_fragment_container"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:paddingTop="60dp"/>-->
+
+    <!-- version 3 -->
+    <!-- TODO: wrapping the fragment within a layout didn't solve the overlap issue. -->
+    <!-- didn't work. ha. ha. -->
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="60dp"/>
+        android:layout_height="match_parent">
+
+        <fragment
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:name="com.example.xfang.sunshine.ForecastFragment"
+            tools:layout="@android:layout/list_content"
+            android:tag="@string/forecast_fragment_tag">
+        </fragment>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
