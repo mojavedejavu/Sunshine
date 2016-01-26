@@ -34,26 +34,16 @@
         <!--android:layout_height="match_parent"-->
         <!--android:paddingTop="60dp"/>-->
 
-    <!-- version 3 -->
-    <!-- TODO: wrapping the fragment within a layout didn't solve the overlap issue. -->
-    <LinearLayout
+    <fragment
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <fragment
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            tools:context="com.example.xfang.sunshine.ForecastFragment"
-            tools:layout="@android:layout/list_content"
-            android:id="@+id/fragment_forecast"
-            android:name="com.example.xfang.sunshine.ForecastFragment"
-            android:tag="@string/forecast_fragment_tag">
-        </fragment>
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        tools:context="com.example.xfang.sunshine.ForecastFragment"
+        tools:layout="@android:layout/list_content"
+        android:id="@+id/fragment_forecast"
+        android:name="com.example.xfang.sunshine.ForecastFragment"
+        android:tag="@string/forecast_fragment_tag">
+    </fragment>
 
 
     <android.support.design.widget.FloatingActionButton

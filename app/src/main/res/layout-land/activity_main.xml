@@ -31,7 +31,8 @@
 
         <fragment
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="match_parent"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
