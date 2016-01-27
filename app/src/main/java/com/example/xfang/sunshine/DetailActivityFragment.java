@@ -164,6 +164,8 @@ public class DetailActivityFragment extends Fragment
             return;
         }
 
+        mForecastString = convertCursorRowToUXFormat(cursor);
+
         int weatherId = cursor.getInt(COL_WEATHER_ICON_ID);
 
         long dateInMilliseconds = cursor.getLong(COL_WEATHER_DATE);
