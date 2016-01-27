@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main_activity_container"
     android:fitsSystemWindows="true">
 
     <android.support.design.widget.AppBarLayout
@@ -20,12 +19,12 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <!--<include layout="@layout/main_activity_fragment_container" />-->
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_activity_fragment_container"
+    <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="60dp"/>
+        android:name="com.example.xfang.sunshine.ForecastFragment"
+        android:id="@+id/forecast_fragment">
+    </fragment>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
