@@ -1,5 +1,9 @@
 <resources>
 
+    <style name="forecastListViewStyle">
+        <!-- leave this empty because no style change in one-pane mode -->
+    </style>
+
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
