@@ -1,6 +1,5 @@
 <!-- wrap everything in a ScrollView so that the content is vertically scrollable-->
 <ScrollView
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
@@ -9,8 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context="com.example.xfang.sunshine.DetailActivityFragment"
-        tools:showIn="@layout/detail_activity"
         android:padding="16dp">
 
         <!-- smart date -->
