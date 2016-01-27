@@ -27,9 +27,11 @@ public class DetailFragment extends Fragment
 
     static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final int DETAIL_LOADER_ID = 10;
+    static final String DETAIL_URI_KEY = "URI_KEY";
 
     String mForecastString;
     ShareActionProvider mShareActionProvider;
+    Uri mUri;
 
     final String SHARE_HASHTAG = "#SunshineApp";
 
@@ -98,6 +100,11 @@ public class DetailFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
 
+        Bundle args = getArguments();
+        if ( args != null){
+            mUri = args.getParcelable(DETAIL_URI_KEY);
+        }
+
         mSmartDateView = (TextView) rootView.findViewById(R.id.list_item_smart_date_textview);
         mDateView = (TextView) rootView.findViewById(R.id.list_item_date_textview);
         mDescView = (TextView) rootView.findViewById(R.id.list_item_description_textview);
@@ -136,13 +143,11 @@ public class DetailFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
-            Uri queryUri = intent.getData();
 
+        if (mUri != null) {
             return new CursorLoader(
                     getActivity(),
-                    queryUri,
+                    mUri,
                     DETAIL_FORECAST_COLUMNS, // projection
                     null, // selection
                     null, // selectionArgs

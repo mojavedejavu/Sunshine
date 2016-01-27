@@ -87,6 +87,7 @@ public class ForecastFragment extends Fragment
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
+
         View rootView = inflater.inflate(R.layout.forecast_fragment, container, false);
         final ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
@@ -99,9 +100,8 @@ public class ForecastFragment extends Fragment
                 long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
                 Uri uri = WeatherEntry.buildUriWithLocationAndDate(locationSetting, date);
 
-                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
-                detailActivityIntent.setData(uri);
-                startActivity(detailActivityIntent);
+                Callback callback = (Callback) getActivity();
+                callback.onItemSelected(uri);
             }
         });
 
@@ -161,5 +161,9 @@ public class ForecastFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
         mForecastAdapter.swapCursor(null);
+    }
+
+    public interface Callback{
+        void onItemSelected(Uri detailFragmentUri);
     }
 }

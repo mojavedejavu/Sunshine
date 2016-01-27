@@ -12,10 +12,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements ForecastFragment.Callback{
 
     private static String mLocation;
     private static boolean mTwoPane;
+    private static final String DETAIL_FRAGMENT_TAG = "DF_TAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
-                        .add(R.id.weather_detail_container, new DetailFragment())
+                        .add(R.id.weather_detail_container, new DetailFragment(),DETAIL_FRAGMENT_TAG)
                         .commit();
             }
         }
@@ -113,5 +115,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(Uri detailFragmentUri) {
+        if (mTwoPane){
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI_KEY, detailFragmentUri);
+
+            DetailFragment df = new DetailFragment();
+            df.setArguments(args);
+            getSupportFragmentManager().beginTransaction().replace(
+                    R.id.weather_detail_container, df, DETAIL_FRAGMENT_TAG).
+                    commit();
+        }
+        else{
+            Intent detailActivityIntent = new Intent(this, DetailActivity.class);
+            detailActivityIntent.setData(detailFragmentUri);
+            startActivity(detailActivityIntent);
+        }
     }
 }
