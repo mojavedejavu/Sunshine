@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
 
         mLocation = Utilities.getPreferredLocationSetting(this);
 
-
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,8 +38,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /*
+     *   update weather if location has changed
+     */
     @Override
     protected void onResume(){
+
         super.onResume();
 
         String userLocationSetting = Utilities.getPreferredLocationSetting(this);
