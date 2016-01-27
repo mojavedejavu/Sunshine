@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="com.example.xfang.sunshine.DetailActivityFragment"
-        tools:showIn="@layout/activity_detail"
+        tools:showIn="@layout/detail_activity"
         android:padding="16dp">
 
         <!-- smart date -->

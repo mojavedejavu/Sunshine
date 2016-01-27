@@ -9,7 +9,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +20,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
-import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
-
-import org.w3c.dom.Text;
 
 public class DetailActivityFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>
@@ -100,7 +96,7 @@ public class DetailActivityFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+        View rootView = inflater.inflate(R.layout.detail_fragment, container, false);
 
         mSmartDateView = (TextView) rootView.findViewById(R.id.list_item_smart_date_textview);
         mDateView = (TextView) rootView.findViewById(R.id.list_item_date_textview);
