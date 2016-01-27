@@ -218,4 +218,17 @@ public class DetailActivityFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
     }
+
+    public void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+        Uri uri = mUri;
+        if (null != uri) {
+            long date = WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherEntry.buildUriWithLocationAndDate(newLocation, date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER_ID, null, this);
+        }
+    }
 }
+
+

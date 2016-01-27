@@ -59,7 +59,7 @@ public class ForecastFragment extends Fragment
     }
 
     // fetch weather and restart loader
-    public void onLoactionChanged(){
+    public void onLocationChanged(){
         fetchWeather();
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }

@@ -67,11 +67,19 @@ public class MainActivity extends AppCompatActivity
 
         String userLocationSetting = Utilities.getPreferredLocationSetting(this);
         if (!mLocation.equals(userLocationSetting)){
-            String tag = getString(R.string.forecast_fragment_tag);
-            ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().
-                    findFragmentByTag(tag);
+            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().
+                    findFragmentById(R.id.fragment_forecast);
+            if(ff != null){
+                ff.onLocationChanged();
+            }
 
-            forecastFragment.onLoactionChanged();
+            DetailActivityFragment df = (DetailActivityFragment)getSupportFragmentManager().
+                    findFragmentByTag(DETAIL_FRAGMENT_TAG);
+            if ( df != null ) {
+                df.onLocationChanged(userLocationSetting);
+            }
+
+
 
             mLocation = userLocationSetting;
         }
