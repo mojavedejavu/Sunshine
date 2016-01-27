@@ -100,7 +100,8 @@
             android:textSize="20sp"
             android:gravity="start"
             android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
+            android:paddingBottom="4dp"
+            android:text="hard_coded_humidity"/>
 
         <!-- wind -->
         <TextView

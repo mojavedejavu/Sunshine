@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static String mLocation;
     //private static final String FORECASTFRAGMENT_TAG = "forecastFragmentTag";
     private static final String DETAIL_FRAGMENT_TAG = "DF_TAG";
@@ -29,11 +30,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mLocation = Utilities.getPreferredLocationSetting(this);
-        Log.d("->  <-", "in onCreate");
+        Log.d(LOG_TAG, "in onCreate");
         if (findViewById(R.id.weather_detail_container) != null){
-            Log.d("->  <-", "found two panes!");
+            Log.d(LOG_TAG, "found two panes!");
             mTwoPanes = true;
             if (savedInstanceState == null) {
+                Log.d(LOG_TAG, "savedInstanceState is null, replace fragment");
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.weather_detail_container, new DetailActivityFragment(), DETAIL_FRAGMENT_TAG)
                         .commit();

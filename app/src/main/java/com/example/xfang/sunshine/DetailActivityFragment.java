@@ -140,27 +140,29 @@ public class DetailActivityFragment extends Fragment
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
-        Intent intent = getActivity().getIntent();
-        if (intent != null) {
-            Uri queryUri = intent.getData();
+        Log.v(LOG_TAG, "In onCreateLoader");
 
-            return new CursorLoader(
-                    getActivity(),
-                    queryUri,
-                    DETAIL_FORECAST_COLUMNS, // projection
-                    null, // selection
-                    null, // selectionArgs
-                    null  // sortOrder
-            );
-        }
-        else{
+        Intent intent = getActivity().getIntent();
+        if (intent == null || intent.getData() == null) {
             return null;
         }
+
+        Uri queryUri = intent.getData();
+
+        return new CursorLoader(
+                getActivity(),
+                queryUri,
+                DETAIL_FORECAST_COLUMNS, // projection
+                null, // selection
+                null, // selectionArgs
+                null  // sortOrder
+        );
     }
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor) {
         if (!cursor.moveToFirst()) {
+            Log.d(LOG_TAG, "in onLoadFinished: cursor is empty");
             return;
         }
 
