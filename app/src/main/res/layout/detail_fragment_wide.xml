@@ -1,0 +1,146 @@
+<!-- wrap everything in a ScrollView so that the content is vertically scrollable-->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- two dates ||  everything else -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <!-- smart date -->
+        <!-- date -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- smart date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_smart_date_textview"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:text="smart_date"
+                android:paddingBottom="2dp" />
+
+            <!-- date -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_date_textview"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:text="date" />
+        </LinearLayout>
+
+        <!-- everything else -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <!-- high      icon    -->
+            <!-- low   description -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <!-- high -->
+                <!-- low -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/list_item_high_textview"
+                        android:textSize="30sp"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="high" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/list_item_low_textview"
+                        android:textSize="30sp"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="low" />
+                </LinearLayout>
+
+                <!--    icon     -->
+                <!-- description -->
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:gravity="center"
+                    android:layout_weight="1">
+                    <!-- icon -->
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/list_item_icon"
+                        android:src="@drawable/art_clear" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/list_item_description_textview"
+                        android:textSize="20sp"
+                        android:gravity="center"
+                        android:padding="4dp"
+                        android:text="description" />
+                </LinearLayout>
+                <!-- high      icon    -->
+                <!-- low   description -->
+            </LinearLayout>
+
+            <!-- humidity -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_humidity_textview"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:paddingTop="10dp"
+                android:paddingBottom="4dp"
+                android:text="humidity" />
+
+            <!-- wind -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_wind_textview"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="wind" />
+
+            <!-- pressure -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/list_item_pressure_textview"
+                android:textSize="20sp"
+                android:gravity="start"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="pressure" />
+            <!-- everything else -->
+        </LinearLayout>
+
+        <!-- two dates ||  everything else -->
+    </LinearLayout>
+</ScrollView>

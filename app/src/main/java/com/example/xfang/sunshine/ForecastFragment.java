@@ -1,7 +1,5 @@
 package com.example.xfang.sunshine;
 
-
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -20,9 +18,6 @@ import android.widget.ListView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
-
-import java.util.List;
-
 
 public class ForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
