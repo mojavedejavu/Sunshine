@@ -28,10 +28,10 @@ import org.w3c.dom.Text;
 public class DetailActivityFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>
 {
-
     static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
     private static final int DETAIL_LOADER_ID = 10;
-
+    public static final String DETAIL_URI_KEY = "DETAIL_URI_KEY";
+    Uri mUri;
     String mForecastString;
     ShareActionProvider mShareActionProvider;
 
@@ -100,6 +100,11 @@ public class DetailActivityFragment extends Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Bundle args = getArguments();
+        if (args != null){
+            mUri = args.getParcelable(DetailActivityFragment.DETAIL_URI_KEY);
+        }
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         mSmartDateView = (TextView) rootView.findViewById(R.id.list_item_smart_date_textview);
@@ -142,21 +147,33 @@ public class DetailActivityFragment extends Fragment
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle){
         Log.v(LOG_TAG, "In onCreateLoader");
 
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
-            return null;
-        }
-
-        Uri queryUri = intent.getData();
-
-        return new CursorLoader(
+        if (mUri != null){
+            return new CursorLoader(
                 getActivity(),
-                queryUri,
+                mUri,
                 DETAIL_FORECAST_COLUMNS, // projection
                 null, // selection
                 null, // selectionArgs
                 null  // sortOrder
-        );
+            );
+        }
+        return null;
+
+//        Intent intent = getActivity().getIntent();
+//        if (intent == null || intent.getData() == null) {
+//            return null;
+//        }
+//
+//        Uri queryUri = intent.getData();
+//
+//        return new CursorLoader(
+//                getActivity(),
+//                queryUri,
+//                DETAIL_FORECAST_COLUMNS, // projection
+//                null, // selection
+//                null, // selectionArgs
+//                null  // sortOrder
+//        );
     }
 
     @Override

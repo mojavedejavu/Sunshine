@@ -29,6 +29,7 @@ public class ForecastFragment extends Fragment
 
     static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private static final int LOADER_ID = 0;
+    private static int mPostion;
 
     private static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
@@ -95,13 +96,18 @@ public class ForecastFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) mForecastAdapter.getItem(position);
-                String locationSetting = cursor.getString(ForecastFragment.COL_LOCATION_SETTING);
-                long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-                Uri uri = WeatherEntry.buildUriWithLocationAndDate(locationSetting, date);
+                mPostion = position;
 
-                Intent detailActivityIntent = new Intent(getActivity(), DetailActivity.class);
-                detailActivityIntent.setData(uri);
-                startActivity(detailActivityIntent);
+                if (cursor != null) {
+                    // TODO: change this to a Utilities call
+                    String locationSetting = cursor.getString(ForecastFragment.COL_LOCATION_SETTING);
+                    Callback callback = (Callback) getActivity();
+                    long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
+                    Uri uri = WeatherEntry.buildUriWithLocationAndDate(locationSetting, date);
+                    callback.onItemSelected(uri);
+                }
+
+
             }
         });
 
@@ -161,5 +167,17 @@ public class ForecastFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
         mForecastAdapter.swapCursor(null);
+    }
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        /**
+         * DetailFragmentCallback for when an item has been selected.
+         */
+        public void onItemSelected(Uri uri);
     }
 }

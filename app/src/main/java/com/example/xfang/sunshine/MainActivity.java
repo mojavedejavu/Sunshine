@@ -15,7 +15,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements ForecastFragment.Callback{
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     private static String mLocation;
@@ -116,5 +117,25 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void onItemSelected(Uri uri){
+        if (mTwoPanes){
+            DetailActivityFragment detailFragment = new DetailActivityFragment();
+
+            // pass uri into detail fragment
+            Bundle args = new Bundle();
+            args.putParcelable(DetailActivityFragment.DETAIL_URI_KEY, uri);
+            detailFragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, detailFragment, DETAIL_FRAGMENT_TAG)
+                    .commit();
+        }
+        else{
+            Intent detailActivityIntent = new Intent(this, DetailActivity.class);
+            detailActivityIntent.setData(uri);
+            startActivity(detailActivityIntent);
+        }
     }
 }
