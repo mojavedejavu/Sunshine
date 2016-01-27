@@ -57,12 +57,6 @@ public class ForecastFragment extends Fragment
     public ForecastFragment() {
     }
 
-    // fetch weather and restart loader
-    public void onLoactionChanged(){
-        fetchWeather();
-        getLoaderManager().restartLoader(LOADER_ID, null, this);
-    }
-
     @Override
     public void onStart(){
         super.onStart();
@@ -161,6 +155,12 @@ public class ForecastFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
         mForecastAdapter.swapCursor(null);
+    }
+
+    // fetch weather and restart loader
+    public void onLocationChanged(){
+        fetchWeather();
+        getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
     public interface Callback{

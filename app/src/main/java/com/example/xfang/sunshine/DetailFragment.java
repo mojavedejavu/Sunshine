@@ -200,4 +200,10 @@ public class DetailFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader){
     }
+
+    public void onLocationChanged(String newLocation){
+        long date = WeatherEntry.getDateFromUri(mUri);
+        mUri = WeatherEntry.buildUriWithLocationAndDate(newLocation, date);
+        getLoaderManager().restartLoader(DETAIL_LOADER_ID, null, this);
+    }
 }

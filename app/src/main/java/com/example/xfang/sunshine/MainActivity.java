@@ -61,17 +61,22 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     protected void onResume(){
-
         super.onResume();
 
         String userLocationSetting = Utilities.getPreferredLocationSetting(this);
-        if (!mLocation.equals(userLocationSetting)){
-            ForecastFragment forecastFragment = (ForecastFragment) getSupportFragmentManager().
-                    findFragmentById(R.id.forecast_fragment);
-
-            forecastFragment.onLoactionChanged();
-
+        if (userLocationSetting != null && !mLocation.equals(userLocationSetting)){
             mLocation = userLocationSetting;
+            ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().
+                    findFragmentById(R.id.forecast_fragment);
+            if (ff != null) {
+                ff.onLocationChanged();
+            }
+
+            DetailFragment df = (DetailFragment)getSupportFragmentManager().
+                    findFragmentByTag(DETAIL_FRAGMENT_TAG);
+            if (df != null){
+                df.onLocationChanged(mLocation);
+            }
         }
     }
 
