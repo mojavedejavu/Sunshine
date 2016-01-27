@@ -21,11 +21,11 @@ import android.widget.TextView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 
-public class DetailActivityFragment extends Fragment
+public class DetailFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>
 {
 
-    static final String LOG_TAG = DetailActivityFragment.class.getSimpleName();
+    static final String LOG_TAG = DetailFragment.class.getSimpleName();
     private static final int DETAIL_LOADER_ID = 10;
 
     String mForecastString;
@@ -83,7 +83,7 @@ public class DetailActivityFragment extends Fragment
 
     }
 
-    public DetailActivityFragment() {
+    public DetailFragment() {
         setHasOptionsMenu(true);
     }
 
