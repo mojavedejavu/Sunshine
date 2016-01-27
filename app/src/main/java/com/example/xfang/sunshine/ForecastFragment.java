@@ -29,6 +29,7 @@ public class ForecastFragment extends Fragment
     private static int mSelectedItemPosition;
     private static String SELECTED_ITEM_POSITION_KEY = "position_key";
     private ListView mListView;
+    private boolean mUseTodayLayout;
 
     private static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
@@ -70,7 +71,7 @@ public class ForecastFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         super.setHasOptionsMenu(true);
     }
@@ -84,7 +85,9 @@ public class ForecastFragment extends Fragment
             mSelectedItemPosition = savedInstanceState.getInt(SELECTED_ITEM_POSITION_KEY);
         }
 
+        // use special today layout?
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         View rootView = inflater.inflate(R.layout.forecast_fragment, container, false);
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
@@ -107,6 +110,15 @@ public class ForecastFragment extends Fragment
 
 
         return rootView;
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout){
+        mUseTodayLayout = useTodayLayout;
+
+        // set the adapter here too
+        if (mForecastAdapter != null){
+            mForecastAdapter.setUseTodayLayout(useTodayLayout);
+        }
     }
 
     @Override

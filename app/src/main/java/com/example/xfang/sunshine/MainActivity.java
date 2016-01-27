@@ -38,6 +38,11 @@ public class MainActivity extends AppCompatActivity
             mTwoPane = false;
         }
 
+        // use today layout?
+        ForecastFragment ff =(ForecastFragment) getSupportFragmentManager().
+                findFragmentById(R.id.forecast_fragment);
+        ff.setUseTodayLayout(!mTwoPane);
+
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
