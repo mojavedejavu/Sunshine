@@ -21,6 +21,8 @@ import android.widget.ListView;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 
+import java.util.List;
+
 
 public class ForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -29,6 +31,9 @@ public class ForecastFragment extends Fragment
 
     static final String LOG_TAG = ForecastFragment.class.getSimpleName();
     private static final int LOADER_ID = 0;
+    private static int mSelectedItemPosition;
+    private static String SELECTED_ITEM_POSITION_KEY = "position_key";
+    private ListView mListView;
 
     private static final String[] FORECAST_COLUMNS = {
             WeatherEntry.TABLE_NAME + "." + WeatherEntry._ID,
@@ -77,18 +82,24 @@ public class ForecastFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
+        // Users, did you know you turning their device sideways
+        // does crazy lifecycle related things?!?!
+        if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_ITEM_POSITION_KEY)) {
+            mSelectedItemPosition = savedInstanceState.getInt(SELECTED_ITEM_POSITION_KEY);
+        }
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
 
-
         View rootView = inflater.inflate(R.layout.forecast_fragment, container, false);
-        final ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(mForecastAdapter);
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView.setAdapter(mForecastAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mSelectedItemPosition = position;
+
                 Cursor cursor = (Cursor) mForecastAdapter.getItem(position);
                 String locationSetting = cursor.getString(ForecastFragment.COL_LOCATION_SETTING);
                 long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
@@ -101,6 +112,14 @@ public class ForecastFragment extends Fragment
 
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        if(mSelectedItemPosition != ListView.INVALID_POSITION) {
+            savedInstanceState.putInt(SELECTED_ITEM_POSITION_KEY, mSelectedItemPosition);
+        }
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     @Override
@@ -150,6 +169,8 @@ public class ForecastFragment extends Fragment
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor cursor){
         mForecastAdapter.swapCursor(cursor);
+
+        mListView.smoothScrollToPosition(mSelectedItemPosition);
     }
 
     @Override
@@ -163,6 +184,11 @@ public class ForecastFragment extends Fragment
         getLoaderManager().restartLoader(LOADER_ID, null, this);
     }
 
+
+    /*
+     * Callback interface to handle communication between
+     * ForecastFragment and DetailFragment
+     */
     public interface Callback{
         void onItemSelected(Uri detailFragmentUri);
     }
