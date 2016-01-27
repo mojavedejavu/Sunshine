@@ -15,13 +15,26 @@ import android.view.MenuItem;
 public class MainActivity extends AppCompatActivity {
 
     private static String mLocation;
+    private static boolean mTwoPane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.forecast_activity);
 
-        mLocation = Utilities.getPreferredLocationSetting(this);
+        // two panes?
+        if (findViewById(R.id.weather_detail_container) != null){
+            mTwoPane = true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .add(R.id.weather_detail_container, new DetailFragment())
+                        .commit();
+            }
+        }
+        else{
+            mTwoPane = false;
+        }
 
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -36,6 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // locationSetting
+        mLocation = Utilities.getPreferredLocationSetting(this);
     }
 
     /*
