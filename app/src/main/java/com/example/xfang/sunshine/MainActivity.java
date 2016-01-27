@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static String mLocation;
     //private static final String FORECASTFRAGMENT_TAG = "forecastFragmentTag";
+    private static final String DETAIL_FRAGMENT_TAG = "DF_TAG";
+    private static boolean mTwoPanes;
 
 
     @Override
@@ -27,12 +29,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mLocation = Utilities.getPreferredLocationSetting(this);
-
-//        if (savedInstanceState == null) {
-//            getSupportFragmentManager().beginTransaction()
-//                    .add(R.id.main_activity_fragment_container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-//                    .commit();
-//        }
+        Log.d("->  <-", "in onCreate");
+        if (findViewById(R.id.weather_detail_container) != null){
+            Log.d("->  <-", "found two panes!");
+            mTwoPanes = true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailActivityFragment(), DETAIL_FRAGMENT_TAG)
+                        .commit();
+            }
+        }
+        else{
+            mTwoPanes = false;
+        }
 
         // toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

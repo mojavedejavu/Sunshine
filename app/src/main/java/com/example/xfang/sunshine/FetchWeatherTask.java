@@ -212,7 +212,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             parseFromJsonAndBulkInsert(buffer.toString(), locationSetting, numDays, unitsPrefIsImperial());
         }
         catch(IOException e){
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(LOG_TAG, "Error cutie pie", e);
             e.printStackTrace();
         }
 
