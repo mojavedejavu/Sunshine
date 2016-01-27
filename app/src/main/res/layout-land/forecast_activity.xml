@@ -19,20 +19,27 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <fragment
-        android:layout_width="0dp"
-        android:layout_weight="1"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.xfang.sunshine.ForecastFragment"
-        android:id="@+id/forecast_fragment">
-    </fragment>
+        android:orientation="horizontal">
 
-    <FrameLayout
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:id="@+id/weather_detail_container">
-    </FrameLayout>
+        <fragment
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:name="com.example.xfang.sunshine.ForecastFragment"
+            android:id="@+id/forecast_fragment">
+        </fragment>
+
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:id="@+id/weather_detail_container">
+        </FrameLayout>
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
