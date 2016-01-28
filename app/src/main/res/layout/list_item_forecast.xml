@@ -18,19 +18,24 @@
         android:layout_height="match_parent"
         android:orientation = "vertical"
         android:layout_weight="2">
+
+        <!-- date-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
-            android:textSize="14sp"
-            android:gravity="start" />
+            android:gravity="start"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-condensed"/>
 
+        <!-- description -->
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_description_textview"
-            android:textSize="14sp"
-            android:gravity="start" />
+            android:gravity="start"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:fontFamily="sans-serif-condensed"/>
     </LinearLayout>
 
     <LinearLayout
