@@ -23,7 +23,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/weather_detail_container">
+        android:id="@+id/weather_detail_container"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
