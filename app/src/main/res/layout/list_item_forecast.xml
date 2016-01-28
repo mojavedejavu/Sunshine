@@ -53,15 +53,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_high_textview"
-            android:textSize="14sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-condensed"/>
 
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_low_textview"
-            android:textSize="14sp"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:fontFamily="sans-serif-condensed"/>
     </LinearLayout>
 
 </LinearLayout>
