@@ -11,22 +11,25 @@
         android:padding="16dp">
 
         <!-- smart date -->
+        <!-- TODO: text size -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_smart_date_textview"
-            android:textSize="20sp"
+            android:textSize="24sp"
             android:gravity="start"
-            android:text="hard_coded_smart_date_woohoo!!!"
-            android:paddingBottom="2dp" />
+            android:text="smart_date_woohoo!!"
+            android:fontFamily="sans-serif-condensed"/>
 
         <!-- date -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_date_textview"
-            android:textSize="20sp"
-            android:gravity="start" />
+            android:textSize="16sp"
+            android:gravity="start"
+            android:fontFamily="sans-serif-condensed"
+            android:textColor="@color/grey_text"/>
 
         <!-- high       icon    -->
         <!-- low   description -->
@@ -46,21 +49,24 @@
                 android:orientation = "vertical"
                 android:gravity="center"
                 android:layout_weight="1">
+                <!-- high -->
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/list_item_high_textview"
-                    android:textSize="30sp"
-                    android:gravity="center"
-                    android:padding="4dp" />
+                    android:textSize="96sp"
+                    android:fontFamily="sans-serif-light"
+                    android:gravity="right" />
 
+                <!-- low -->
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/list_item_low_textview"
-                    android:textSize="30sp"
-                    android:gravity="center"
-                    android:padding="4dp" />
+                    android:textSize="48sp"
+                    android:fontFamily="sans-serif-light"
+                    android:textColor="@color/grey_text"
+                    android:gravity="right" />
             </LinearLayout>
 
             <!--    icon     -->
@@ -71,19 +77,22 @@
                 android:orientation = "vertical"
                 android:gravity="center"
                 android:layout_weight="1">
+
                 <!-- icon -->
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/list_item_icon"/>
 
+                <!-- description -->
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/list_item_description_textview"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:padding="4dp" />
+                    android:textAppearance="?android:textAppearanceLarge"
+                    android:fontFamily="sans-serif-condensed"
+                    android:textColor="@color/grey_text"
+                    android:gravity="center" />
             </LinearLayout>
         </LinearLayout>
 
@@ -92,29 +101,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_humidity_textview"
-            android:textSize="20sp"
             android:gravity="start"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-light"/>
 
         <!-- wind -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_wind_textview"
-            android:textSize="20sp"
             android:gravity="start"
             android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
+            android:paddingBottom="4dp"
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-light"/>
 
         <!-- pressure -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/list_item_pressure_textview"
-            android:textSize="20sp"
             android:gravity="start"
-            android:paddingTop="4dp"
-            android:paddingBottom="4dp" />
+            android:textAppearance="?android:textAppearanceLarge"
+            android:fontFamily="sans-serif-light"/>
     </LinearLayout>
 </ScrollView>
