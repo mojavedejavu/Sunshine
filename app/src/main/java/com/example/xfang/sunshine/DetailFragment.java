@@ -171,6 +171,7 @@ public class DetailFragment extends Fragment
 
         long dateInMilliseconds = cursor.getLong(COL_WEATHER_DATE);
         String readableDate = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
+        String smartDate = Utilities.getDayName(getActivity(), dateInMilliseconds);
 
         String description = cursor.getString(COL_WEATHER_DESC);
         String maxTemp = cursor.getString(COL_WEATHER_MAX_TEMP);
@@ -182,6 +183,7 @@ public class DetailFragment extends Fragment
         String pressureString = String.format(getActivity().getString(R.string.format_pressure),
                 cursor.getDouble(COL_WEATHER_PRESSURE));
 
+        mSmartDateView.setText(smartDate);
         mDateView.setText(readableDate);
         mDescView.setText(description);
         mHighView.setText(maxTemp);

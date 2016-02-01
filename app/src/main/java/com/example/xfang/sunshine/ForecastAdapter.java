@@ -71,10 +71,10 @@ public class ForecastAdapter extends CursorAdapter{
     @Override
     public void bindView(View view, Context context, Cursor cursor){
         long dateInMilliseconds = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
-        String readableDate = Utilities.formatMillisecondsToReadableDate(dateInMilliseconds);
+        String smartDate = Utilities.getDayName(context, dateInMilliseconds);
 
         ViewHolder viewHolder = (ViewHolder) view.getTag();
-        viewHolder.dateView.setText(readableDate);
+        viewHolder.dateView.setText(smartDate);
         viewHolder.descView.setText(cursor.getString(ForecastFragment.COL_WEATHER_DESC));
         viewHolder.highView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MAX_TEMP));
         viewHolder.lowView.setText(cursor.getString(ForecastFragment.COL_WEATHER_MIN_TEMP));
