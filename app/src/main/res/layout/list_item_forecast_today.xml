@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="16dp"
     android:gravity="center"
-    android:background="@drawable/touch_selector"
+    android:background="@drawable/today_touch_selector"
     android:layout_marginLeft="60dp">
     <!-- TODO: left margin 60 dp-->
 
