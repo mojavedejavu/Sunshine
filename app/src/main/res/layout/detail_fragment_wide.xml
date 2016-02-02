@@ -121,7 +121,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_item_wind_textview"
+                android:id="@+id/list_item_wind_value_textview"
                 android:textSize="20sp"
                 android:gravity="start"
                 android:paddingTop="4dp"
@@ -132,7 +132,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/list_item_pressure_textview"
+                android:id="@+id/list_item_pressure_value_textview"
                 android:textSize="20sp"
                 android:gravity="start"
                 android:paddingTop="4dp"

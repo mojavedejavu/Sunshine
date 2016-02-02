@@ -111,8 +111,8 @@ public class DetailFragment extends Fragment
         mHighView = (TextView) rootView.findViewById(R.id.list_item_high_textview);
         mLowView = (TextView) rootView.findViewById(R.id.list_item_low_textview);
         mHumidityView = (TextView) rootView.findViewById(R.id.list_item_humidity_textview);
-        mWindView = (TextView) rootView.findViewById(R.id.list_item_wind_textview);
-        mPressureView = (TextView) rootView.findViewById(R.id.list_item_pressure_textview);
+        mWindView = (TextView) rootView.findViewById(R.id.list_item_wind_value_textview);
+        mPressureView = (TextView) rootView.findViewById(R.id.list_item_pressure_value_textview);
 
         mIconView = (ImageView) rootView.findViewById(R.id.list_item_icon);
 
@@ -176,12 +176,11 @@ public class DetailFragment extends Fragment
         String description = cursor.getString(COL_WEATHER_DESC);
         String maxTemp = cursor.getString(COL_WEATHER_MAX_TEMP);
         String minTemp = cursor.getString(COL_WEATHER_MIN_TEMP);
-        String humidityString = getActivity().getString(R.string.humidity) + ": " +
-                cursor.getString(COL_WEATHER_HUMIDITY);
-        String windString = getActivity().getString(R.string.wind) + ": " +
-                cursor.getString(COL_WEATHER_WIND_SPEED);
-        String pressureString = String.format(getActivity().getString(R.string.format_pressure),
-                cursor.getDouble(COL_WEATHER_PRESSURE));
+        String humidityString = cursor.getString(COL_WEATHER_HUMIDITY);
+        String windString = cursor.getString(COL_WEATHER_WIND_SPEED);
+        String pressureString = cursor.getString(COL_WEATHER_PRESSURE);
+//        String pressureString = String.format(getActivity().getString(R.string.format_pressure),
+//                cursor.getDouble(COL_WEATHER_PRESSURE));
 
         mSmartDateView.setText(smartDate);
         mDateView.setText(readableDate);
