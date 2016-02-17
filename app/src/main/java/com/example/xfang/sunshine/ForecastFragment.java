@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.ListView;
 
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
+import com.example.xfang.sunshine.service.SunshineService;
 
 public class ForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -153,9 +155,11 @@ public class ForecastFragment extends Fragment
 
 
     private void fetchWeather(){
-        FetchWeatherTask task = new FetchWeatherTask(getActivity());
-        String location = Utilities.getPreferredLocationSetting(getActivity());
-        task.execute(location);
+        // start the service
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        getActivity().startService(intent);
+//        String location = Utilities.getPreferredLocationSetting(getActivity());
+//        intent.putExtra(Intent.EXTRA_TEXT, location);
     }
 
 
