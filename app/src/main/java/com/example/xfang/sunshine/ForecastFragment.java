@@ -1,8 +1,12 @@
 package com.example.xfang.sunshine;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
@@ -155,11 +159,17 @@ public class ForecastFragment extends Fragment
 
 
     private void fetchWeather(){
-        // start the service
-        Intent intent = new Intent(getActivity(), SunshineService.class);
-        getActivity().startService(intent);
-//        String location = Utilities.getPreferredLocationSetting(getActivity());
-//        intent.putExtra(Intent.EXTRA_TEXT, location);
+        // wrap the receiverIntent in a pending intent
+        Intent receiverIntent = new Intent(getActivity(), SunshineService.FetchWeatherAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, receiverIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        // set the alarm to fire pending intent in 5 seconds
+        AlarmManager manager = (AlarmManager) getActivity().
+                getSystemService(Context.ALARM_SERVICE);
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,
+                pendingIntent);
+
     }
 
 

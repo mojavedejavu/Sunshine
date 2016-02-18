@@ -14,10 +14,12 @@
         <provider
             android:authorities="com.example.xfang.sunshine"
             android:name=".data.WeatherProvider">
-
         </provider>
 
         <service android:name=".service.SunshineService" />
+
+        <receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"
+            android:enabled="true"/>
 
         <activity
             android:name=".MainActivity"

@@ -2,8 +2,10 @@ package com.example.xfang.sunshine.service;
 
 
 import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -225,6 +227,14 @@ public class SunshineService extends IntentService{
             }
         }
 
+    }
+
+    public static class FetchWeatherAlarmReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Intent sunshineServiceIntent = new Intent(context, SunshineService.class);
+            context.startService(sunshineServiceIntent);
+        }
     }
 
 }
