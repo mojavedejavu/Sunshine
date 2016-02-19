@@ -21,6 +21,18 @@
         <receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"
             android:enabled="true"/>
 
+        <service android:name=".sync.SunshineAuthenticatorService">
+
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+
+            <meta-data
+                android:resource="@xml/authenticator"
+                android:name="android.accounts.AccountAuthenticator" />
+        </service>
+
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
