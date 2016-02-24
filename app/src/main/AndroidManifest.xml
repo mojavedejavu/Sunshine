@@ -3,6 +3,14 @@
     package="com.example.xfang.sunshine">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Permissions required by the sync adapter -->
+    <uses-permission
+        android:name="android.permission.READ_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SYNC_SETTINGS"/>
+    <uses-permission
+        android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+
 
     <application
         android:allowBackup="true"
@@ -11,9 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- exported="false" only our app can see our content provider -->
+        <!-- syncable="true"  this provider will be synced with a server -->
         <provider
             android:authorities="com.example.xfang.sunshine"
-            android:name=".data.WeatherProvider">
+            android:name=".data.WeatherProvider"
+            android:exported="false"
+            android:syncable="true">
         </provider>
 
         <service android:name=".service.SunshineService" />
@@ -21,16 +33,28 @@
         <receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"
             android:enabled="true"/>
 
+        <!-- authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">
-
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
-
             <meta-data
                 android:resource="@xml/authenticator"
                 android:name="android.accounts.AccountAuthenticator" />
         </service>
+
+        <!-- SyncAdapter service -->
+        <service
+            android:name=".sync.SunshineSyncService"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/syncadapter"/>
+        </service>
+
 
 
         <activity

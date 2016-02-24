@@ -1,5 +1,6 @@
 package com.example.xfang.sunshine;
 
+import android.accounts.Account;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -24,6 +25,7 @@ import android.widget.ListView;
 import com.example.xfang.sunshine.data.WeatherContract.WeatherEntry;
 import com.example.xfang.sunshine.data.WeatherContract.LocationEntry;
 import com.example.xfang.sunshine.service.SunshineService;
+import com.example.xfang.sunshine.sync.SunshineSyncAdapter;
 
 public class ForecastFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>{
@@ -159,16 +161,17 @@ public class ForecastFragment extends Fragment
 
 
     private void fetchWeather(){
-        // wrap the receiverIntent in a pending intent
-        Intent receiverIntent = new Intent(getActivity(), SunshineService.FetchWeatherAlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, receiverIntent,
-                PendingIntent.FLAG_ONE_SHOT);
-
-        // set the alarm to fire pending intent in 5 seconds
-        AlarmManager manager = (AlarmManager) getActivity().
-                getSystemService(Context.ALARM_SERVICE);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,
-                pendingIntent);
+        SunshineSyncAdapter.syncImmediately(getActivity());
+//        // wrap the receiverIntent in a pending intent
+//        Intent receiverIntent = new Intent(getActivity(), SunshineService.FetchWeatherAlarmReceiver.class);
+//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, receiverIntent,
+//                PendingIntent.FLAG_ONE_SHOT);
+//
+//        // set the alarm to fire pending intent in 5 seconds
+//        AlarmManager manager = (AlarmManager) getActivity().
+//                getSystemService(Context.ALARM_SERVICE);
+//        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,
+//                pendingIntent);
 
     }
 
