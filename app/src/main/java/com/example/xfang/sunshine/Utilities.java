@@ -50,13 +50,17 @@ public class Utilities {
         }
     }
 
-    public static String formatTemp(Context context, String input, boolean toImperial){
+    public static String formatTemp(Context context, double input, boolean toImperial){
         double output = new Double(input);
         if (toImperial) {
             output = output * 1.8 + 32;
         }
         return String.format(context.getString(R.string.format_temperature), output);
+    }
 
+    public static String formatTemp(Context context, String input, boolean toImperial){
+        double inputInDouble = new Double(input);
+        return formatTemp(context, inputInDouble, toImperial);
     }
 
     public static String getPreferredLocationSetting(Context context){
