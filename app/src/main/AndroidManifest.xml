@@ -28,10 +28,12 @@
             android:syncable="true">
         </provider>
 
-        <service android:name=".service.SunshineService" />
+        <!-- SunshineService -->
+        <!--<service android:name=".service.SunshineService" />-->
 
-        <receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"
-            android:enabled="true"/>
+        <!-- AlarmReceiver -->
+        <!--<receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"-->
+            <!--android:enabled="true"/>-->
 
         <!-- authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">

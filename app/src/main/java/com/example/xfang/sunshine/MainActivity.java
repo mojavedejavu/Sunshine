@@ -15,6 +15,8 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.xfang.sunshine.sync.SunshineSyncAdapter;
+
 public class MainActivity extends AppCompatActivity
         implements ForecastFragment.Callback{
 
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity
 
         // locationSetting
         mLocation = Utilities.getPreferredLocationSetting(this);
+
+        SunshineSyncAdapter.initializeSyncAdapter(this);
     }
 
     /*

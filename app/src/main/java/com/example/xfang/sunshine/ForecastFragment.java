@@ -161,17 +161,22 @@ public class ForecastFragment extends Fragment
 
 
     private void fetchWeather(){
+        // use SyncAdapter
         SunshineSyncAdapter.syncImmediately(getActivity());
-//        // wrap the receiverIntent in a pending intent
-//        Intent receiverIntent = new Intent(getActivity(), SunshineService.FetchWeatherAlarmReceiver.class);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, receiverIntent,
-//                PendingIntent.FLAG_ONE_SHOT);
-//
-//        // set the alarm to fire pending intent in 5 seconds
-//        AlarmManager manager = (AlarmManager) getActivity().
-//                getSystemService(Context.ALARM_SERVICE);
-//        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,
-//                pendingIntent);
+        /*
+           code for using alarm
+         */
+/*        // wrap the receiverIntent in a pending intent
+        Intent receiverIntent = new Intent(getActivity(), SunshineService.FetchWeatherAlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, receiverIntent,
+                PendingIntent.FLAG_ONE_SHOT);
+
+        // set the alarm to fire pending intent in 5 seconds
+        AlarmManager manager = (AlarmManager) getActivity().
+                getSystemService(Context.ALARM_SERVICE);
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + 5 * 1000,
+                pendingIntent);
+*/
 
     }
 
