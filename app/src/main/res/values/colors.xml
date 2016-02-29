@@ -8,7 +8,12 @@
     <color name="white">#ffffff</color>
 
 
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <!-- light blue 100 -->
+    <color name="primary_light">#B3E5FC</color>
+    <!-- light blue 500 -->
+    <color name="primary">#03A9F4</color>
+    <!-- light blue 700 -->
+    <color name="primary_dark">#0288D1</color>
+    <!-- amber A 200 -->
+    <color name="accent">#FFD740</color>
 </resources>

@@ -2,12 +2,12 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true"
-        android:drawable="@color/sunshine_light_blue"/>
+        android:drawable="@color/primary_light"/>
 
     <item android:state_activated="true"
-        android:drawable="@color/sunshine_light_blue"/>
+        android:drawable="@color/primary_light"/>
 
     <!-- default -->
-    <item android:drawable="@color/sunshine_light_blue"/>
+    <item android:drawable="@color/primary_light"/>
 
 </selector>
