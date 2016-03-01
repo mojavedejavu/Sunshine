@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
 //        // fab
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

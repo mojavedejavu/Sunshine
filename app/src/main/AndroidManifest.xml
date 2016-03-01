@@ -28,13 +28,6 @@
             android:syncable="true">
         </provider>
 
-        <!-- SunshineService -->
-        <!--<service android:name=".service.SunshineService" />-->
-
-        <!-- AlarmReceiver -->
-        <!--<receiver android:name=".service.SunshineService$FetchWeatherAlarmReceiver"-->
-            <!--android:enabled="true"/>-->
-
         <!-- authenticator service -->
         <service android:name=".sync.SunshineAuthenticatorService">
             <intent-filter>
@@ -59,25 +52,30 @@
 
 
 
+        <!-- main activity -->
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- detail activity -->
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="MainActivity" />
         </activity>
+
+        <!-- settings activity -->
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
