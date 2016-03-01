@@ -86,7 +86,7 @@ public class ForecastAdapter extends CursorAdapter{
             viewHolder.iconView.setImageResource(artResource);
         }
         else{
-            int icResource = Utilities.getIconResourceForWeatherCondition(weatherId);
+            int icResource = Utilities.getArtResourceForWeatherCondition(weatherId);
             viewHolder.iconView.setImageResource(icResource);
         }
     }
