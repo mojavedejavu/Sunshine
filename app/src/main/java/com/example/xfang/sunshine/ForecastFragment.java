@@ -137,28 +137,6 @@ public class ForecastFragment extends Fragment
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        inflater.inflate(R.menu.menu_forecast_fragment, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_refresh) {
-            fetchWeather();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
 
     private void fetchWeather(){
         // use SyncAdapter

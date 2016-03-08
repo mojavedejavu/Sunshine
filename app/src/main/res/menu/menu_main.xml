@@ -4,8 +4,7 @@
     tools:context="com.example.xfang.sunshine.MainActivity">
     <item
         android:id="@+id/action_viewOnMap"
-        android:title="@string/action_viewOnMap"
-        />
+        android:title="@string/action_viewOnMap"/>
 
     <item
         android:id="@+id/action_settings"
