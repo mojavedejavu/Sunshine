@@ -1,4 +1,4 @@
-package com.example.xfang.sunshine;
+package com.xiaofanfang.apps.sunshine;
 
 import org.junit.Test;
 

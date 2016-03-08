@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.xfang.sunshine">
+    package="com.xiaofanfang.apps.sunshine">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Permissions required by the sync adapter -->
@@ -22,14 +22,14 @@
         <!-- exported="false" only our app can see our content provider -->
         <!-- syncable="true"  this provider will be synced with a server -->
         <provider
-            android:authorities="com.example.xfang.sunshine"
-            android:name=".data.WeatherProvider"
+            android:authorities="com.xiaofanfang.apps.sunshine"
+            android:name="com.xiaofanfang.apps.sunshine.data.WeatherProvider"
             android:exported="false"
             android:syncable="true">
         </provider>
 
         <!-- authenticator service -->
-        <service android:name=".sync.SunshineAuthenticatorService">
+        <service android:name="com.xiaofanfang.apps.sunshine.sync.SunshineAuthenticatorService">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
@@ -40,7 +40,7 @@
 
         <!-- SyncAdapter service -->
         <service
-            android:name=".sync.SunshineSyncService"
+            android:name="com.xiaofanfang.apps.sunshine.sync.SunshineSyncService"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.content.SyncAdapter" />
@@ -54,7 +54,7 @@
 
         <!-- main activity -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.xiaofanfang.apps.sunshine.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -66,23 +66,23 @@
 
         <!-- detail activity -->
         <activity
-            android:name=".DetailActivity"
+            android:name="com.xiaofanfang.apps.sunshine.DetailActivity"
             android:label="@string/title_activity_detail"
-            android:parentActivityName=".MainActivity"
+            android:parentActivityName="com.xiaofanfang.apps.sunshine.MainActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="com.xiaofanfang.apps.sunshine.MainActivity" />
         </activity>
 
         <!-- settings activity -->
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.xiaofanfang.apps.sunshine.SettingsActivity"
             android:label="@string/title_activity_settings"
-            android:parentActivityName=".MainActivity">
+            android:parentActivityName="com.xiaofanfang.apps.sunshine.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="MainActivity" />
+                android:value="com.xiaofanfang.apps.sunshine.MainActivity" />
         </activity>
     </application>
 

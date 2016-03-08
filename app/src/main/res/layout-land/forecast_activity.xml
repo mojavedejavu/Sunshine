@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:name="com.example.xfang.sunshine.ForecastFragment"
+            android:name="com.xiaofanfang.apps.sunshine.ForecastFragment"
             android:id="@+id/forecast_fragment">
         </fragment>
 

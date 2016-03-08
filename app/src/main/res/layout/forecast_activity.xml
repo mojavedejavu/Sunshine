@@ -23,7 +23,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.example.xfang.sunshine.ForecastFragment"
+        android:name="com.xiaofanfang.apps.sunshine.ForecastFragment"
         android:id="@+id/forecast_fragment"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
     </fragment>

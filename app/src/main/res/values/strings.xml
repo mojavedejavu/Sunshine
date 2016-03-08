@@ -10,7 +10,7 @@
     <string name="pref_last_notification">last_notification</string>
 
     <!-- sync -->
-    <string name="content_authority">com.example.xfang.sunshine</string>
+    <string name="content_authority">com.xiaofanfang.apps.sunshine</string>
     <string name="sync_account_type">sunshine.xfang.com</string>
 
 
