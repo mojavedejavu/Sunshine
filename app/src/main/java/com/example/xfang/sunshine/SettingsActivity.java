@@ -5,6 +5,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import android.util.TypedValue;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import java.util.List;
 
@@ -52,8 +54,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.settings_activity_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        addPaddingAbovePrefsList();
     }
 
+    private void addPaddingAbovePrefsList(){
+        ListView listView = getListView();
+        int paddingLeft = listView.getPaddingLeft();
+        int paddingRight = listView.getPaddingRight();
+        int paddingTop = listView.getPaddingTop();
+        int paddingBottom = listView.getPaddingBottom();
+
+        // get actionBarSize
+        final TypedArray styledAttributes = getTheme().obtainStyledAttributes(
+                new int[]{android.R.attr.actionBarSize});
+        int actionBarSize = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        getListView().setPadding(paddingLeft, paddingTop + actionBarSize, paddingRight, paddingBottom);
+    }
 
 
     /**
