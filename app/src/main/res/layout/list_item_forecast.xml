@@ -5,6 +5,7 @@
     android:layout_height="wrap_content"
     android:orientation = "horizontal"
     android:paddingRight="16dp"
+    android:paddingLeft="16dp"
     android:background="@drawable/touch_selector">
 
     <FrameLayout
